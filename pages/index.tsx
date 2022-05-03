@@ -13,6 +13,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+
+    <br />
+    <h1 className="text-2xl font-italic underline">
+      Tailwind Test
+    </h1>
+    <br />
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
