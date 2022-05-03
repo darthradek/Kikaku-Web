@@ -1,6 +1,9 @@
+@import '../../styles/variables.module.scss';
+
 .registerPageWrapper {
     width: 100%;
     height: 100vh;
+    background-color:$background-primary;
 }
 
 .logoWrapper{
