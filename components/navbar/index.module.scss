@@ -1,12 +1,36 @@
-@import '../../styles/variables.module.scss';
+@import "../../styles/variables.module.scss";
 
 .nav {
+  height: 100%;
+  width: 100%;
+  padding: 3%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  border: 1px solid black;
+  .logo {
+    display: flex;
+    align-items: center;
+    color: map-get($cs, background-secondary);
+    font-size: 40px;
+    font-weight: bold;
+    width: 30%;
+  }
+
+  .menu {
+    a {
+      margin: 0 1%;
+      border-radius: 8px;
+      padding: 3%;
+      border: 2px solid map-get($cs, logo-primary);
+    }
+    color: map-get($cs, logo-secondary);
+    -webkit-text-stroke: 1px map-get($cs, background-primary);
+    letter-spacing: 2px;
+    width: 20%;
     display: flex;
     justify-content: space-around;
-    background-color: teal;
-    border: 1px solid black;
-    h2 {
-        background-color: map-get($colorscheme, highlight-primary );
-        color: map-get($colorscheme, highlight-secondary );
-    }
+    align-items: center;
   }
+}
