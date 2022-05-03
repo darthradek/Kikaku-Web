@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import css from './index.module.css'
+import css from './index.module.scss'
 
 const LoginPage: NextPage = () => {
     return ( 
