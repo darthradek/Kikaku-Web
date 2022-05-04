@@ -1,24 +1,22 @@
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import css from './index.module.scss' 
 
 const Home: NextPage = () => {
   return (
-    <div>
-      /homepage
-      <h1>Routing</h1>
-        <div className={css.nav}>
-          <Link href="/register">
-            <a>
-              <h2>Register</h2>
-            </a>
-          </Link>
-          <Link href="/login">
-            <a>
-              <h2>Login</h2>
-            </a>
-          </Link>
+
+    <div className={css.homePageWrapper}>
+      <div className={css.contentWrapper}>
+      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          <div className={css.logoWrapper}>
+            <img className={css.logo} src="/logo.svg" alt="logo" />
+          </div>
+          <div>
+            <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Welcome to Kikaku!</h1>
+          </div>
         </div>
+      </div>
+      </div>
     </div>
   )
 }
