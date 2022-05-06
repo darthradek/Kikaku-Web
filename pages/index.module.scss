@@ -5,6 +5,9 @@
     height: 90vh;
     background-color: map-get($cs, background-primary);
   }
+  .background{
+    background-color: map-get($cs, background-primary);
+  }
   
   .logoWrapper {
     display: flex;

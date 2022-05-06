@@ -8,7 +8,7 @@ const Nav: NextPage = () => {
       <div className={css.nav}>
         <div className={css.logo}>
           <div className={css.logoWrapper}>
-            <img className={css.logo1} src="/logo.svg" alt="logo" />
+            <img className="max-w-none" src="/logo.svg" alt="logo" />
           </div>
           <Link href="/">
             <a>
@@ -17,14 +17,14 @@ const Nav: NextPage = () => {
           </Link>
         </div>
         <div className={css.menu}>
-          <Link href="/register">
-            <a>
-              <h2>Register</h2>
+          <Link href="/login">
+            <a className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+              <h2>Login</h2>
             </a>
           </Link>
-          <Link href="/login">
-            <a>
-              <h2>Login</h2>
+          <Link href="/register">
+            <a className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+              <h2>Register</h2>
             </a>
           </Link>
         </div>
