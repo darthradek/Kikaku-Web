@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <ChakraProvider>
       <Navbar />
-      <Sidebar />
+      <Sidebar children={undefined} />
 
       <Component {...pageProps} />
       </ChakraProvider>
