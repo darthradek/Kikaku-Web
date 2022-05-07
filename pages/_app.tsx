@@ -2,18 +2,15 @@ import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from "../components/navbar/index";
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import SimpleSidebar from "../components/sidebar";
+import Sidebar from "../components/sidebar/index";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ChakraProvider>
       <Navbar />
-<<<<<<< HEAD
-      <SimpleSidebar />
+      <Sidebar />
 
-=======
->>>>>>> chakra-setup
       <Component {...pageProps} />
       </ChakraProvider>
     </>
