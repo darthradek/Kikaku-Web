@@ -1,1 +1,6 @@
 @import '../../styles/variables.module.scss';
+
+
+.registerPageWrapper {
+    color:map-get($cs,   highlight-primary);
+}
