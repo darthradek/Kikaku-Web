@@ -3,7 +3,7 @@
 .nav {
   height: 100%;
   width: 100%;
-  padding: 3%;
+  padding: 1%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -26,11 +26,11 @@
       border: 2px solid map-get($cs, logo-primary);
     }
     color: map-get($cs, logo-secondary);
-    -webkit-text-stroke: 1px map-get($cs, background-primary);
+    -webkit-text-stroke: 0.1px map-get($cs, background-primary);
     letter-spacing: 2px;
     width: 20%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
   }
 }
