@@ -1,4 +1,6 @@
 import React from "react";
+import SystemSidebar from "../system-sidebar/SystemSidebar";
+import css from "./SystemLayout.module.scss";
 
 interface IProps {
   //   pageMetadata?: Page;
@@ -12,9 +14,12 @@ function SystemLayout(props: IProps) {
 
   //MARK: Render
   return (
-    <>
-      <div></div>
-    </>
+    <div className={css.mainContainer}>
+      <div className={css.navWrapper}>
+        <SystemSidebar />
+      </div>
+      <div className={css.pageContent}>{children}</div>
+    </div>
   );
 }
 
