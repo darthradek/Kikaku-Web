@@ -1,8 +1,15 @@
 import type { NextPage } from "next";
+import SystemPageHOC from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
 import css from "./index.module.scss";
 
 const DashboardPage: NextPage = () => {
-  return <div className={css.homePageWrapper}>cipa</div>;
+  return (
+    <SystemPageHOC>
+      <div className={css.something}>
+        <h1>sam</h1>
+      </div>
+    </SystemPageHOC>
+  );
 };
 
 export default DashboardPage;
