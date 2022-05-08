@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         </Text>
         <Center>
           <Link href="/register">
-            <Button size='lg' colorScheme='gray' mt='24px' mr='12px'>Sign In</Button>
+            <Button size='lg' colorScheme='blue' mt='24px' mr='12px' variant='outline'>Sign In</Button>
           </Link>
           <Link href="/login">
             <Button size='lg' colorScheme='blue' mt='24px'>Log in</Button>
