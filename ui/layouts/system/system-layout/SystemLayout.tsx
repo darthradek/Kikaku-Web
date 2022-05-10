@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import React from "react";
 import SystemSidebar from "../navigation/system-sidebar/SystemSidebar";
 import css from "./SystemLayout.module.scss";
@@ -14,12 +15,12 @@ function SystemLayout(props: IProps) {
 
   //MARK: Render
   return (
-    <div className={css.mainContainer}>
-      <div className={css.desktopNavWrapper}>
+    <Box>
+      <Box>
         <SystemSidebar />
-      </div>
-      <div className={css.pageContent}>{children}</div>
-    </div>
+      </Box>
+      <Box>{children}</Box>
+    </Box>
   );
 }
 

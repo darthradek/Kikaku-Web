@@ -6,7 +6,7 @@ const DashboardPage: NextPage = () => {
   return (
     <SystemPageHOC>
       <div className={css.something}>
-        <h1>sam</h1>
+        <h1>Dashboard</h1>
       </div>
     </SystemPageHOC>
   );

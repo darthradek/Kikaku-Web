@@ -57,7 +57,7 @@ const LoginPage: NextPage = () => {
           </Center>
         </Box>
         <Text fontSize="xl" align="center">
-          Don't have an account yet?
+          Dont have an account yet?
         </Text>
         <Link href="/register">
           <Text fontSize="xl" color="blue" className={css.createAccount}>

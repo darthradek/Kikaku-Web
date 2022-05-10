@@ -1,8 +1,9 @@
-@import "../../styles/variables.module.scss";
+@import "../../../styles/variables.module.scss";
 
 .projectPageWrapper {
   width: 100vw;
   height: 90vh;
+  padding: 5rem;
   background-color: map-get($cs, background-primary);
   .contentWrapper {
     width: 100%;

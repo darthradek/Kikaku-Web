@@ -2,21 +2,23 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import css from "./SystemSidebar.module.scss";
 import {
-  IconButton,
   Box,
-  CloseButton,
   Flex,
-  Icon,
-  useColorModeValue,
   Link,
-  Drawer,
-  DrawerContent,
-  Text,
   useDisclosure,
-  BoxProps,
-  FlexProps,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
+  DrawerOverlay,
+  Tag,
+  Spacer,
 } from "@chakra-ui/react";
-
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import SystemNavItems from "../../../../static-data/SystemNavItem";
 interface IProps {}
 
 function SystemSidebar(props: IProps) {
@@ -32,65 +34,77 @@ function SystemSidebar(props: IProps) {
   ];
 
   // SECTION: Hooks State - UI
-  const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // SECTION: UI Events
 
-  const NavItem = ({ icon, children, ...rest }: any) => {
-    return (
-      <Link
-        href="#"
-        style={{ textDecoration: "none" }}
-        _focus={{ boxShadow: "none" }}
-      >
-        <Flex
-          align="center"
-          p="4"
-          mx="4"
-          borderRadius="lg"
-          role="group"
-          cursor="pointer"
-          _hover={{
-            bg: "cyan.400",
-            color: "white",
-          }}
-          {...rest}
-        >
-          {icon && (
-            <Icon
-              mr="4"
-              fontSize="16"
-              _groupHover={{
-                color: "white",
-              }}
-              as={icon}
-            />
-          )}
-          {children}
-        </Flex>
-      </Link>
-    );
-  };
-
   // SECTION: Render
   return (
-    <Box position="fixed" h="100%" p={5} bg="#dfdfdf">
+    <>
+      <div className={css.navToggleButton} onClick={onOpen}>
+        <ChevronRightIcon w="8" h="8" />
+      </div>
       <Drawer
-        isOpen={isDrawerOpened}
-        onClose={() => setIsDrawerOpened(false)}
+        isOpen={isOpen}
+        onClose={onClose}
         placement="left"
-        // returnFocusOnClose={false}
-        // autoFocus={false}
+        closeOnOverlayClick={false}
       >
         <DrawerContent>
-          {LinkItems.map((link) => (
-            <NavItem key={link.name} icon={link.icon}>
-              {link.name}
-            </NavItem>
-          ))}
+          <DrawerHeader>
+            <img src="/logo.svg" className={css.logoBanner} alt="" />
+            <DrawerCloseButton />
+          </DrawerHeader>
+          <DrawerBody mt="8">
+            {SystemNavItems.systemNavItems.map((link, index) => (
+              <Link
+                key={index}
+                href={link.href}
+                style={{ textDecoration: "none" }}
+                _focus={{ boxShadow: "none" }}
+              >
+                <Flex
+                  align="center"
+                  mb="4"
+                  p="4"
+                  borderRadius="lg"
+                  role="group"
+                  bg="#e1e8eb"
+                  cursor="pointer"
+                  _hover={{
+                    bg: "#343a40",
+                    color: "white",
+                  }}
+                >
+                  {/* {icon && (
+                  <Icon
+                    mr="4"
+                    fontSize="16"
+                    _groupHover={{
+                      color: "white",
+                    }}
+                    as={icon}
+                  />
+                )} */}
+                  {link.label}
+                </Flex>
+              </Link>
+            ))}
+          </DrawerBody>
+          <DrawerFooter h="4rem" bg="#e1e8eb">
+            <Flex minWidth="max-content" alignItems="center" gap="8">
+              <Link href="https://chakra-ui.com" isExternal>
+                Logged in user...
+              </Link>
+              <Spacer />
+              <Button colorScheme="#e1e8eb" bg="#343a40">
+                Log out
+              </Button>
+            </Flex>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </Box>
+    </>
   );
 }
 
