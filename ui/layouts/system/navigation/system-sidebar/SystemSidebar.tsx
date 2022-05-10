@@ -1,8 +1,6 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
 import css from "./SystemSidebar.module.scss";
 import {
-  Box,
   Flex,
   Link,
   useDisclosure,
@@ -14,7 +12,6 @@ import {
   DrawerCloseButton,
   Button,
   DrawerOverlay,
-  Tag,
   Spacer,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
