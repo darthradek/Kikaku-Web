@@ -25,14 +25,6 @@ function SystemSidebar(props: IProps) {
   // SECTION: Props
   const {} = props;
 
-  const LinkItems: Array<any> = [
-    { name: "Home" },
-    { name: "Trending" },
-    { name: "Explore" },
-    { name: "Favourites" },
-    { name: "Settings" },
-  ];
-
   // SECTION: Hooks State - UI
   const { isOpen, onOpen, onClose } = useDisclosure();
 
