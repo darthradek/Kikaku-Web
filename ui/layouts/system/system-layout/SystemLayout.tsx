@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import LandingNavBar from "../../landing/navigation/landing-nav-bar/LandingNavBar";
 import SystemSidebar from "../navigation/system-sidebar/SystemSidebar";
 import css from "./SystemLayout.module.scss";
 
@@ -19,7 +20,16 @@ function SystemLayout(props: IProps) {
       <Box>
         <SystemSidebar />
       </Box>
-      <Box>{children}</Box>
+      <Box
+        pt="5.5rem"
+        pl="2rem"
+        pb="2rem"
+        pr={"2rem"}
+        minH="100vh"
+        bg="#343a40"
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
