@@ -10,6 +10,25 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
+import UserService from "../../services/UserService";
+import { IRegisterUserDTO } from "../../utils/dtos/RegisterUserDTO";
+
+//SECTION: Services
+const userService = new UserService();
+
+const registerCustomerDTO: IRegisterUserDTO = {
+  username: "oczio",
+  email: "oczio@gmail.com",
+  password: "123456",
+};
+
+// MARK: Services calls
+async function register() {
+  userService.registerUser(registerCustomerDTO).then((response) => {
+    console.log("response: ", response);
+    // this.setState({users: users, numberOfUsers: users.length})
+  });
+}
 
 const RegisterPage: NextPage = () => {
   return (
@@ -77,6 +96,7 @@ const RegisterPage: NextPage = () => {
               colorScheme="#e1e8eb"
               mt="24px"
               bg={"#ffc107"}
+              onClick={() => register()}
             >
               Create account
             </Button>
