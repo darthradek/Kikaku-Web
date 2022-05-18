@@ -11,11 +11,37 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
+import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
+import Routes from "../../global/Routes";
+import UserService from "../../services/UserService";
+import { ILoginUserDTO } from "../../utils/dtos/user/LoginUserDTO";
+import { useEffect, useState } from "react";
+import router from "next/router";
 
 const LoginPage: NextPage = () => {
+  // SECTION: Services
+  const userService = new UserService();
+
+  // SECTION: Services calls
+  async function loginUser() {
+    const loginUserDTO: ILoginUserDTO = {
+      email: emailInput,
+      password: passwordInput,
+    };
+
+    userService.loginUser(loginUserDTO).then((response) => {
+      console.log("response: ", response);
+      router.push(Routes.systemDashboardPage);
+    });
+  }
+
+  // SECTION: Hooks State - UI
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
+
   return (
-    <div>
-      <Center h="100vh" background="#E1E8EB" flexDirection="column">
+    <LandingPageHOC>
+      <Center h="100vh" background="backgroundPrimary" flexDirection="column">
         <Center>
           <Heading mb={4}>Log into your account</Heading>
         </Center>
@@ -30,6 +56,7 @@ const LoginPage: NextPage = () => {
               placeholder="Enter email"
               borderColor="grey"
               _hover={{ borderColor: "blue" }}
+              onChange={(newValue) => setEmailInput(newValue.target.value)}
             />
           </FormControl>
           <FormControl pb="12px">
@@ -42,15 +69,21 @@ const LoginPage: NextPage = () => {
               placeholder="Enter password"
               borderColor="grey"
               _hover={{ borderColor: "blue" }}
+              onChange={(newValue) => setPasswordInput(newValue.target.value)}
             />
           </FormControl>
           <Center>
             <Button
               w={[300, 400, 600]}
               size="lg"
-              colorScheme="#e1e8eb"
               mt="24px"
-              bg={"#ffc107"}
+              bg={"highlightPrimary"}
+              color="backgroundSecondary"
+              _hover={{
+                bg: "highlightSecondary",
+                color: "backgroundPrimary",
+              }}
+              onClick={() => loginUser()}
             >
               Log In
             </Button>
@@ -59,13 +92,17 @@ const LoginPage: NextPage = () => {
         <Text fontSize="xl" align="center">
           Dont have an account yet?
         </Text>
-        <Link href="/register">
-          <Text fontSize="xl" color="blue" className={css.createAccount}>
-            Create one
+        <Link href={Routes.registerPage}>
+          <Text
+            fontSize="xl"
+            color="highlightSecondary"
+            className={css.createAccount}
+          >
+            Sign up
           </Text>
         </Link>
       </Center>
-    </div>
+    </LandingPageHOC>
   );
 };
 

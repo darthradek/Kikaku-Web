@@ -21,6 +21,7 @@ import {
 import LandingNavItems from "../../../../static-data/LandingNavItems";
 import { ILandingNavItem } from "../../../../../utils/ui-interfaces/landing/ILandingNavItem";
 import Routes from "../../../../../global/Routes";
+import Router, { useRouter } from "next/router";
 
 interface IProps {}
 
@@ -29,9 +30,10 @@ function LandingNavBar(props: IProps) {
   const {} = props;
 
   // SECTION: Constants & Variables
+  const router = useRouter();
 
   // SECTION: Hooks State - Data
-  const [dataState, setDataState] = useState();
+  const [uiState, setUiState] = useState();
 
   // SECTION: Hooks Effect - Data
   useEffect(() => {}, []);
@@ -45,17 +47,22 @@ function LandingNavBar(props: IProps) {
   const landingNavItems: ILandingNavItem[] = LandingNavItems.landingNavItems;
 
   // SECTION: Hooks State - UI
-  const [uiState, setUiState] = useState();
+  const [isAccountRouteActive, setIsAccountRouteActive] =
+    useState<boolean>(true);
 
   // SECTION: Hooks Effect - UI
-  useEffect(() => {}, [uiState]);
+  useEffect(() => {
+    if (router.pathname === Routes.loginPage) {
+      setIsAccountRouteActive(true);
+    } else if (router.pathname === Routes.registerPage) {
+      setIsAccountRouteActive(true);
+    } else {
+      setIsAccountRouteActive(false);
+    }
+  }, [router]);
 
   // SECTION: UI Events
   function uiEvent() {}
-
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
-  const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   // SECTION: Render
   return (
@@ -93,60 +100,114 @@ function LandingNavBar(props: IProps) {
           >
             <img src="/logo.svg" alt="kikaku-logo" />
           </Text>
-          <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <HStack spacing={8} alignItems={"center"}>
-              {landingNavItems.map((navItem, index) => (
-                <Link
-                  key={index}
-                  px={2}
-                  py={1}
-                  rounded={"md"}
-                  _hover={{
-                    textDecoration: "none",
-                    bg: "#e1e8eb",
-                  }}
-                  href={navItem.href}
-                >
-                  {navItem.label}
-                </Link>
-              ))}
-            </HStack>
-          </Flex>
+          {isAccountRouteActive !== true && (
+            <Flex display={{ base: "none", md: "flex" }} ml={10}>
+              <HStack spacing={8} alignItems={"center"}>
+                {landingNavItems.map((navItem, index) => (
+                  <Link
+                    key={index}
+                    px={2}
+                    py={1}
+                    rounded={"md"}
+                    _hover={{
+                      bg: "backgroundPrimary",
+                    }}
+                    href={navItem.href}
+                  >
+                    {navItem.label}
+                  </Link>
+                ))}
+              </HStack>
+            </Flex>
+          )}
         </Flex>
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
-        >
-          <a href={Routes.loginPage}>
-            <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              bg={"background-primary"}
-              _hover={{
-                bg: "#e1e8eb",
-              }}
-            >
-              Sign In
-            </Button>
-          </a>
-          <a href={Routes.registerPage}>
-            <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"#7952b3"}
-              _hover={{
-                bg: "#7952b3",
-              }}
-            >
-              Sign Up
-            </Button>
-          </a>
-        </Stack>
+        {isAccountRouteActive ? (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
+          >
+            {router.pathname === Routes.registerPage && (
+              <Flex alignItems="center" gap="4">
+                {/* <Text>Dont have account yet?</Text> */}
+                <a href={Routes.loginPage}>
+                  <Button
+                    display={{ base: "none", md: "inline-flex" }}
+                    fontSize={"sm"}
+                    fontWeight={600}
+                    color={"white"}
+                    bg={"backgroundSecondary"}
+                    _hover={{
+                      bg: "highlightPrimary",
+                      color: "backgroundSecondary",
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                </a>
+              </Flex>
+            )}
+            {router.pathname === Routes.loginPage && (
+              <Flex alignItems="center" gap="4">
+                {/* <Text>Dont have account yet?</Text> */}
+                <a href={Routes.registerPage}>
+                  <Button
+                    display={{ base: "none", md: "inline-flex" }}
+                    fontSize={"sm"}
+                    fontWeight={600}
+                    color={"white"}
+                    bg={"backgroundSecondary"}
+                    _hover={{
+                      bg: "highlightPrimary",
+                      color: "backgroundSecondary",
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </a>
+              </Flex>
+            )}
+          </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
+          >
+            <a href={Routes.loginPage}>
+              <Button
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                bg={"backgroundSecondary"}
+                color="backgroundPrimary"
+                _hover={{
+                  bg: "highlightPrimary",
+                  color: "backgroundSecondary",
+                }}
+              >
+                Sign In
+              </Button>
+            </a>
+            <a href={Routes.registerPage}>
+              <Button
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"backgroundSecondary"}
+                bg={"highlightPrimary"}
+                _hover={{
+                  bg: "highlightSecondary",
+                  color: "backgroundPrimary",
+                }}
+              >
+                Sign Up
+              </Button>
+            </a>
+          </Stack>
+        )}
       </Flex>
 
       {/* <Collapse in={isOpen} animateOpacity>

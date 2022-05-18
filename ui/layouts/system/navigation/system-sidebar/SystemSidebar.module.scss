@@ -1,21 +1,5 @@
-@import "../../../../../styles/variables.module.scss";
 
-.navToggleButton {
-    position: absolute;
-    background-color: green;
-    padding: 1rem;
-    width: 2rem;
-    height: 2rem;
-    border-top-right-radius:8px;
-    border-bottom-right-radius:8px;
-    top: 6rem;
-    cursor: pointer;
-    background-color: map-get($cs,  background-secondary);
-    color: map-get($cs,  background-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .logoBanner {
     padding: 0.5rem;

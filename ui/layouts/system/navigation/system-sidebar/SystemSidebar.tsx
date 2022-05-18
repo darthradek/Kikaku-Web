@@ -16,8 +16,10 @@ import {
   Box,
   HStack,
   Stack,
+  Avatar,
+  IconButton,
 } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import SystemNavItems from "../../../../static-data/SystemNavItem";
 import Routes from "../../../../../global/Routes";
 interface IProps {}
@@ -33,97 +35,62 @@ function SystemSidebar(props: IProps) {
 
   // SECTION: Render
   return (
-    <Box>
-      {/* <div className={css.navToggleButton} onClick={}>
-        <ChevronRightIcon w="8" h="8" />
-      </div> */}
-      <Box as="header" position="fixed" w="100%" bg="#F2F2F2">
-        <Flex minH={"60px"} py={{ base: 2 }} px={{ base: 4 }} align={"center"}>
-          <Flex
-            flex={{ base: 1, md: "auto" }}
-            ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
-          >
-            {/* <IconButton
-          onClick={onToggle}
-          icon={
-            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-          }
-          variant={"ghost"}
-          aria-label={"Toggle Navigation"}
-        /> */}
-          </Flex>
-          <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <Button
-              _hover={{
-                bg: "#343a40",
-                color: "#7952b3",
-              }}
-              bg="#343a40"
-              onClick={onOpen}
+    <>
+      <Box px="4" as="header" position="fixed" w="100%" bg="white">
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <IconButton
+            size={"md"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
+            bg="backgroundSecondary"
+            color="backgroundPrimary"
+            _hover={{
+              bg: "backgroundSecondary",
+              color: "backgroundPrimary",
+            }}
+            onClick={isOpen ? onClose : onOpen}
+          />
+          <HStack spacing={8} alignItems={"center"}>
+            <Box>
+              <img src="/logo.svg" alt="" />
+            </Box>
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
             >
-              <HamburgerIcon color="#e1e8eb" />
-            </Button>
-            <Flex display={{ base: "none", md: "flex" }} ml={10}>
-              <HStack spacing={8} alignItems={"center"}>
-                {SystemNavItems.systemNavItems.map((navItem, index) => (
-                  <Link
-                    key={index}
-                    px={2}
-                    py={1}
-                    rounded={"md"}
-                    _hover={{
-                      textDecoration: "none",
-                      bg: "#343a40",
-                      color: "white",
-                    }}
-                    href={navItem.href}
-                  >
-                    {navItem.label}
-                  </Link>
-                ))}
-              </HStack>
-            </Flex>
-          </Flex>
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-          >
-            <a href={Routes.loginPage}>
-              <Button
-                display={{ base: "none", md: "inline-flex" }}
-                fontSize={"sm"}
-                fontWeight={600}
-                bg={"background-primary"}
-                _hover={{
-                  bg: "#e1e8eb",
-                }}
-              >
-                Sign In
-              </Button>
-            </a>
-            <a href={Routes.registerPage}>
-              <Button
-                display={{ base: "none", md: "inline-flex" }}
-                fontSize={"sm"}
-                fontWeight={600}
-                color={"white"}
-                bg={"#7952b3"}
-                _hover={{
-                  bg: "#7952b3",
-                }}
-              >
-                Sign Up
-              </Button>
-            </a>
-          </Stack>
-        </Flex>
+              {SystemNavItems.systemNavItems.map((navItem, index) => (
+                <Link
+                  fontWeight="bold"
+                  key={index}
+                  px={4}
+                  py={2}
+                  rounded={"md"}
+                  bg="backgroundPrimary"
+                  color="backgroundSecondary"
+                  _hover={{
+                    textDecoration: "none",
+                    bg: "backgroundPrimary",
+                    color: "highlightSecondary",
+                  }}
+                  href={navItem.href}
+                >
+                  {navItem.label}
+                </Link>
+              ))}
+            </HStack>
+          </HStack>
 
-        {/* <Collapse in={isOpen} animateOpacity>
-      <MobileNav />
-    </Collapse> */}
+          <Flex alignItems="center">
+            <Avatar
+              size={"md"}
+              src={
+                "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+              }
+            />
+          </Flex>
+        </Flex>
       </Box>
       <Drawer
         isOpen={isOpen}
@@ -187,7 +154,7 @@ function SystemSidebar(props: IProps) {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-    </Box>
+    </>
   );
 }
 

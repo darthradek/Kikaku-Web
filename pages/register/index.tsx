@@ -5,51 +5,61 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  FormHelperText,
+  Text,
   Input,
   Button,
   Center,
+  Link,
+  FormHelperText,
 } from "@chakra-ui/react";
 import UserService from "../../services/UserService";
-import { IRegisterUserDTO } from "../../utils/dtos/RegisterUserDTO";
-
-//SECTION: Services
-const userService = new UserService();
-
-const registerCustomerDTO: IRegisterUserDTO = {
-  username: "oczio",
-  email: "oczio@gmail.com",
-  password: "123456",
-};
-
-// MARK: Services calls
-async function register() {
-  userService.registerUser(registerCustomerDTO).then((response) => {
-    console.log("response: ", response);
-    // this.setState({users: users, numberOfUsers: users.length})
-  });
-}
+import { useEffect, useState } from "react";
+import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
+import Routes from "../../global/Routes";
+import Router from "next/router";
+import { IRegisterUserDTO } from "../../utils/dtos/user/RegisterUserDTO";
 
 const RegisterPage: NextPage = () => {
+  // SECTION: Services
+  const userService = new UserService();
+
+  // SECTION: Services calls
+  async function register() {
+    const username = emailInput.split("@")[0];
+
+    const registerUserDTO: IRegisterUserDTO = {
+      username: username,
+      email: emailInput,
+      password: passwordInput,
+    };
+
+    userService.registerUser(registerUserDTO).then((response) => {
+      console.log("response: ", response);
+      Router.push(Routes.loginPage);
+    });
+  }
+
+  // SECTION: Hooks State - UI
+  const [isCreateAccountValid, setIsCreateAccountValid] =
+    useState<boolean>(false);
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>();
+
+  // MARK: Hooks Effect - UI
+  useEffect(() => {
+    if (emailInput.length > 0 && passwordInput === confirmPasswordInput) {
+      setIsCreateAccountValid(true);
+    }
+  }, [emailInput, passwordInput, confirmPasswordInput]);
+
   return (
-    <div>
-      <Center h="100vh" background="#E1E8EB" flexDirection="column">
+    <LandingPageHOC>
+      <Center h="100vh" background="backgroundPrimary" flexDirection="column">
         <Center>
           <Heading mb={4}>Create your account</Heading>
         </Center>
         <Box w={[300, 400, 600]} p="12px" border="0px" borderRadius="10px">
-          <FormControl pb="12px" isRequired>
-            <FormLabel htmlFor="username" fontSize="xl">
-              Username
-            </FormLabel>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter username"
-              borderColor="grey"
-              _hover={{ borderColor: "blue" }}
-            />
-          </FormControl>
           <FormControl pb="12px" isRequired>
             <FormLabel htmlFor="email" fontSize="xl">
               Email address
@@ -60,6 +70,7 @@ const RegisterPage: NextPage = () => {
               placeholder="Enter email"
               borderColor="grey"
               _hover={{ borderColor: "blue" }}
+              onChange={(newValue) => setEmailInput(newValue.target.value)}
             />
           </FormControl>
           <FormControl pb="12px" isRequired>
@@ -72,6 +83,7 @@ const RegisterPage: NextPage = () => {
               placeholder="Enter password"
               borderColor="grey"
               _hover={{ borderColor: "blue" }}
+              onChange={(newValue) => setPasswordInput(newValue.target.value)}
             />
             <FormHelperText>
               Your password must be at least 6 characters long.
@@ -82,28 +94,51 @@ const RegisterPage: NextPage = () => {
               Confirm password
             </FormLabel>
             <Input
-              id="password"
-              type="password"
+              id="confrimPassword"
+              type="confrimPassword"
               placeholder="Enter password again"
               borderColor="grey"
               _hover={{ borderColor: "blue" }}
+              onChange={(newValue) =>
+                setConfirmPasswordInput(newValue.target.value)
+              }
             />
+            <FormHelperText>
+              Repeat your password in order to confirm it.
+            </FormHelperText>
           </FormControl>
           <Center>
             <Button
+              isDisabled={!isCreateAccountValid}
               w={[300, 400, 600]}
               size="lg"
-              colorScheme="#e1e8eb"
               mt="24px"
-              bg={"#ffc107"}
+              bg={"highlightPrimary"}
+              color="backgroundSecondary"
+              _hover={{
+                bg: "highlightSecondary",
+                color: "backgroundPrimary",
+              }}
               onClick={() => register()}
             >
               Create account
             </Button>
           </Center>
         </Box>
+        <Text fontSize="xl" align="center">
+          Already have an account?
+        </Text>
+        <Link href={Routes.loginPage}>
+          <Text
+            fontSize="xl"
+            color="highlightSecondary"
+            className={css.createAccount}
+          >
+            Sign in
+          </Text>
+        </Link>
       </Center>
-    </div>
+    </LandingPageHOC>
   );
 };
 
