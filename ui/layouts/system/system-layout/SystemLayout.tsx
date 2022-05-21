@@ -20,14 +20,7 @@ function SystemLayout(props: IProps) {
       <Box>
         <SystemSidebar />
       </Box>
-      <Box
-        pt="5.5rem"
-        pl="2rem"
-        pb="2rem"
-        pr={"2rem"}
-        minH="100vh"
-        bg="#343a40"
-      >
+      <Box pt="6rem" pl="2rem" pb="2rem" pr={"2rem"} minH="100vh" bg="#343a40">
         {children}
       </Box>
     </Box>
