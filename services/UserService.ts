@@ -1,30 +1,22 @@
 import { ILoginUserDTO } from "../utils/dtos/user/LoginUserDTO";
 import { IRegisterUserDTO } from "../utils/dtos/user/RegisterUserDTO";
+import FetchService from "./core/FetchService";
 
 class UserService {
   private readonly userUrl: string = "/api/users";
 
   public async registerUser(data: IRegisterUserDTO) {
-    const response = await fetch(this.userUrl + "/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    return await response.json();
+    const response = FetchService.fetch(
+      this.userUrl + `/register`,
+      "POST",
+      data
+    );
+    return await response;
   }
 
   public async loginUser(data: ILoginUserDTO) {
-    const response = await fetch(this.userUrl + "/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    return await response.json();
-  }
-
-  public async getAllUsers() {
-    const response = await fetch(this.userUrl);
-    return await response.json();
+    const response = FetchService.fetch(this.userUrl + `/login`, "POST", data);
+    return await response;
   }
 }
 

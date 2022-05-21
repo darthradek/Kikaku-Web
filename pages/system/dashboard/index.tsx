@@ -1,18 +1,14 @@
-import {
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import type { NextPage } from "next";
-import SystemPageHOC from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
+import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import type { GetServerSideProps } from "next";
+import SystemPageHOC, {
+  ISystemPageHOCProps,
+  systemPageServerSideProps,
+} from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
 import css from "./index.module.scss";
 
-const DashboardPage: NextPage = () => {
+function DashboardPage(props: ISystemPageHOCProps) {
   return (
-    <SystemPageHOC>
+    <SystemPageHOC systemPageProps={props.systemPageProps}>
       <Container maxW={"5xl"}>
         <Stack
           mt="10"
@@ -60,6 +56,8 @@ const DashboardPage: NextPage = () => {
       </Container>
     </SystemPageHOC>
   );
-};
+}
+
+export const getServerSideProps: GetServerSideProps = systemPageServerSideProps;
 
 export default DashboardPage;

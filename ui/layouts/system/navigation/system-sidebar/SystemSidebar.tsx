@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import SystemNavItems from "../../../../static-data/SystemNavItem";
-import Routes from "../../../../../global/Routes";
+
 interface IProps {}
 
 function SystemSidebar(props: IProps) {
@@ -81,7 +81,6 @@ function SystemSidebar(props: IProps) {
               ))}
             </HStack>
           </HStack>
-
           <Flex alignItems="center">
             <Avatar
               size={"md"}

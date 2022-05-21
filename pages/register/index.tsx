@@ -34,7 +34,6 @@ const RegisterPage: NextPage = () => {
     };
 
     userService.registerUser(registerUserDTO).then((response) => {
-      console.log("response: ", response);
       Router.push(Routes.loginPage);
     });
   }

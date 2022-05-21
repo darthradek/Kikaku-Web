@@ -17,10 +17,12 @@ import UserService from "../../services/UserService";
 import { ILoginUserDTO } from "../../utils/dtos/user/LoginUserDTO";
 import { useEffect, useState } from "react";
 import router from "next/router";
+import AuthService from "../../services/AuthService";
 
 const LoginPage: NextPage = () => {
   // SECTION: Services
   const userService = new UserService();
+  const authService = new AuthService();
 
   // SECTION: Services calls
   async function loginUser() {
@@ -28,9 +30,8 @@ const LoginPage: NextPage = () => {
       email: emailInput,
       password: passwordInput,
     };
-
-    userService.loginUser(loginUserDTO).then((response) => {
-      console.log("response: ", response);
+    userService.loginUser(loginUserDTO).then((response: any) => {
+      authService.saveToken(response.token);
       router.push(Routes.systemDashboardPage);
     });
   }
