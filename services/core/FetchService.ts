@@ -24,7 +24,7 @@ class FetchService {
     data?: object
   ): Promise<any> {
     return fetch(`${url}`, {
-      body: data ? JSON.stringify({ ...data }) : null,
+      body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
