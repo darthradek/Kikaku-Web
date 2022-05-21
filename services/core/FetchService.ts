@@ -1,8 +1,6 @@
-import Cookies from "universal-cookie";
-
 class FetchService {
   public fetch(url: string, type: string, data?: object): Promise<any> {
-    return fetch(`${url}`, {
+    return fetch(`http://localhost:3000/` + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
@@ -23,7 +21,7 @@ class FetchService {
     type: string,
     data?: object
   ): Promise<any> {
-    return fetch(`${url}`, {
+    return fetch(`http://localhost:3000/` + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",

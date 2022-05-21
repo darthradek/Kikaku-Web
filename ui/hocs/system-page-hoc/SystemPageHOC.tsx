@@ -7,7 +7,7 @@ import SystemLayout from "../../layouts/system/system-layout/SystemLayout";
 import PageBody from "../PageBody";
 
 interface ISystemPageProps {
-  loggedInUser: any;
+  loggedInUser: object;
   page?: any;
 }
 
@@ -20,7 +20,7 @@ function SystemPageHOC(props: ISystemPageHOCProps) {
   // MARK: Props
   const { systemPageProps, children } = props;
   const { loggedInUser, page } = systemPageProps;
-
+  console.log(loggedInUser);
   //MARK: Render
   return (
     <>
@@ -45,40 +45,25 @@ export const systemPageServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const authService = new AuthService();
-  const response = authService.validateTokenSSR(ctx);
+  const response = await authService.validateTokenSSR(ctx);
+  const loggedInUser: object = response?.user;
 
-  console.log("loggedInUser", response);
-
-  const loggedInUser: any = "Andrew Sampel";
-
-  const systemPageProps: ISystemPageHOCProps = {
-    systemPageProps: {
-      // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
-      loggedInUser: loggedInUser,
-    },
-  };
-  return JSON.parse(JSON.stringify({ props: systemPageProps }));
-
-  // if (response) {
-  //   console.log("loggedInUser", response);
-
-  //   const loggedInUser: any = "Andrew Sampel";
-
-  //   const systemPageProps: ISystemPageHOCProps = {
-  //     systemPageProps: {
-  //       // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
-  //       loggedInUser: loggedInUser,
-  //     },
-  //   };
-  //   return JSON.parse(JSON.stringify({ props: systemPageProps }));
-  // } else {
-  //   if (ctx.res) {
-  //     ctx.res.writeHead(302, { location: Routes.loginPage });
-  //     ctx.res.end();
-  //   } else {
-  //     Router.replace(Routes.loginPage);
-  //   }
-  // }
+  if (loggedInUser) {
+    const systemPageProps: ISystemPageHOCProps = {
+      systemPageProps: {
+        // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
+        loggedInUser: loggedInUser,
+      },
+    };
+    return JSON.parse(JSON.stringify({ props: systemPageProps }));
+  } else {
+    if (ctx.res) {
+      ctx.res.writeHead(302, { location: Routes.loginPage });
+      ctx.res.end();
+    } else {
+      Router.replace(Routes.loginPage);
+    }
+  }
 };
 
 export default SystemPageHOC;

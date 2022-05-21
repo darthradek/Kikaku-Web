@@ -47,7 +47,6 @@ const LoginPage: NextPage = (props: any) => {
         isClosable: true,
       });
       authService.saveToken(response.token);
-      console.log(response.token);
       router.push(Routes.systemDashboardPage);
     });
   }
