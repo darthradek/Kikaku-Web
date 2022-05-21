@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   Center,
+  useToast,
 } from "@chakra-ui/react";
 import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
 import Routes from "../../global/Routes";
@@ -19,7 +20,13 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import AuthService from "../../services/AuthService";
 
-const LoginPage: NextPage = () => {
+const LoginPage: NextPage = (props: any) => {
+  // SECTION: Props
+  const {} = props;
+
+  // SECTION: Constants & Variables
+  const toast = useToast();
+
   // SECTION: Services
   const userService = new UserService();
   const authService = new AuthService();
@@ -31,6 +38,14 @@ const LoginPage: NextPage = () => {
       password: passwordInput,
     };
     userService.loginUser(loginUserDTO).then((response: any) => {
+      toast({
+        title: "User logged in successfully!",
+        position: "top-left",
+        description: "Good luck planning your projects :)",
+        status: "success",
+        duration: 1350,
+        isClosable: true,
+      });
       authService.saveToken(response.token);
       router.push(Routes.systemDashboardPage);
     });

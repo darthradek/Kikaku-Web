@@ -18,10 +18,11 @@ import {
   Stack,
   Avatar,
   IconButton,
+  Icon,
+  Text,
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import SystemNavItems from "../../../../static-data/SystemNavItem";
-
 interface IProps {}
 
 function SystemSidebar(props: IProps) {
@@ -62,21 +63,42 @@ function SystemSidebar(props: IProps) {
             >
               {SystemNavItems.systemNavItems.map((navItem, index) => (
                 <Link
-                  fontWeight="bold"
-                  key={index}
-                  px={4}
-                  py={2}
-                  rounded={"md"}
-                  bg="backgroundPrimary"
-                  color="backgroundSecondary"
                   _hover={{
                     textDecoration: "none",
-                    bg: "backgroundPrimary",
-                    color: "highlightSecondary",
                   }}
                   href={navItem.href}
+                  key={index}
                 >
-                  {navItem.label}
+                  <Flex
+                    align="center"
+                    px={4}
+                    py={2}
+                    rounded={"md"}
+                    bg="backgroundPrimary"
+                    color="backgroundSecondary"
+                    _hover={{
+                      textDecoration: "none",
+                      bg: "backgroundPrimary",
+                      color: "highlightSecondary",
+                    }}
+                  >
+                    <Icon
+                      mr="2"
+                      fontSize="20"
+                      _groupHover={{
+                        color: "black",
+                      }}
+                      as={navItem.icon}
+                    />
+                    <Text
+                      _hover={{
+                        textDecoration: "none",
+                      }}
+                      fontWeight="bold"
+                    >
+                      {navItem.label}
+                    </Text>
+                  </Flex>
                 </Link>
               ))}
             </HStack>

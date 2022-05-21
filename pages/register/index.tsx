@@ -18,8 +18,10 @@ import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
 import Routes from "../../global/Routes";
 import Router from "next/router";
 import { IRegisterUserDTO } from "../../utils/dtos/user/RegisterUserDTO";
+import { useToast } from "@chakra-ui/react";
 
 const RegisterPage: NextPage = () => {
+  const toast = useToast();
   // SECTION: Services
   const userService = new UserService();
 
@@ -32,8 +34,15 @@ const RegisterPage: NextPage = () => {
       email: emailInput,
       password: passwordInput,
     };
-
     userService.registerUser(registerUserDTO).then((response) => {
+      toast({
+        title: "Account created successfully!",
+        position: "top-left",
+        description: "Now you can log into your account",
+        status: "success",
+        duration: 1350,
+        isClosable: true,
+      });
       Router.push(Routes.loginPage);
     });
   }

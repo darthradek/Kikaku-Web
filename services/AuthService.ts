@@ -1,5 +1,7 @@
 import { GetServerSidePropsContext, NextPageContext } from "next";
+import { Router } from "next/router";
 import Cookies from "universal-cookie";
+import Routes from "../global/Routes";
 import FetchService from "./core/FetchService";
 
 class AuthService {
@@ -9,20 +11,22 @@ class AuthService {
     return Promise.resolve();
   }
 
-  // public async authenticateToken(token: string): Promise<any> {
-  //   return FetchService.fetch("/api/users/authenticate/", "GET", token);
-  // }
+  public async authenticateToken(token: string): Promise<any> {
+    const response = FetchService.fetchAuthed(
+      `/api/users/authenticate`,
+      token,
+      "GET"
+    );
+    return await response;
+  }
 
   public async validateTokenSSR(ctx: GetServerSidePropsContext) {
     const cookies = new Cookies(ctx.req ? ctx.req.headers.cookie : null);
     const token = cookies.get("token");
-    console.log(token);
-    // const response = await this.authenticateToken(token);
-    // console.log(response);
-    // return response;
-
-    // const navService = new NavService();
-    // navService.redirectUser('/', ctx);
+    if (token) {
+      const response = this.authenticateToken(token);
+      return response;
+    }
   }
 }
 

@@ -1,5 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Router from "next/router";
 import React from "react";
+import Routes from "../../../global/Routes";
 import AuthService from "../../../services/AuthService";
 import SystemLayout from "../../layouts/system/system-layout/SystemLayout";
 import PageBody from "../PageBody";
@@ -42,13 +44,12 @@ function SystemPageHOC(props: ISystemPageHOCProps) {
 export const systemPageServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
-  const tokenService = new AuthService();
-  await tokenService.validateTokenSSR(ctx).then((response) => {
-    // console.log("cipa", JSON.stringify(response));
-  });
+  const authService = new AuthService();
+  const response = authService.validateTokenSSR(ctx);
 
-  const loggedInUser: any = "some user";
-  console.log("loggedInUser", loggedInUser);
+  console.log("loggedInUser", response);
+
+  const loggedInUser: any = "Andrew Sampel";
 
   const systemPageProps: ISystemPageHOCProps = {
     systemPageProps: {
@@ -57,6 +58,27 @@ export const systemPageServerSideProps: GetServerSideProps = async (
     },
   };
   return JSON.parse(JSON.stringify({ props: systemPageProps }));
+
+  // if (response) {
+  //   console.log("loggedInUser", response);
+
+  //   const loggedInUser: any = "Andrew Sampel";
+
+  //   const systemPageProps: ISystemPageHOCProps = {
+  //     systemPageProps: {
+  //       // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
+  //       loggedInUser: loggedInUser,
+  //     },
+  //   };
+  //   return JSON.parse(JSON.stringify({ props: systemPageProps }));
+  // } else {
+  //   if (ctx.res) {
+  //     ctx.res.writeHead(302, { location: Routes.loginPage });
+  //     ctx.res.end();
+  //   } else {
+  //     Router.replace(Routes.loginPage);
+  //   }
+  // }
 };
 
 export default SystemPageHOC;
