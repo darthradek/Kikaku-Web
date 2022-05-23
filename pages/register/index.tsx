@@ -11,6 +11,7 @@ import {
   Center,
   Link,
   FormHelperText,
+  Stack,
 } from "@chakra-ui/react";
 import UserService from "../../services/UserService";
 import { useEffect, useState } from "react";
@@ -64,10 +65,13 @@ const RegisterPage: NextPage = () => {
   return (
     <LandingPageHOC>
       <Center h="100vh" background="backgroundPrimary" flexDirection="column">
-        <Center>
-          <Heading mb={4}>Create your account</Heading>
-        </Center>
-        <Box w={[300, 400, 600]} p="12px" border="0px" borderRadius="10px">
+        <Box p={8}>
+          <Stack mb="6" textAlign={"center"} align={"left"}>
+            <Heading fontSize={"3xl"}>Create your account!</Heading>
+            <Text fontSize={"lg"} color={"gray.600"}>
+              to enjoy all of our cool features ✌️
+            </Text>
+          </Stack>
           <FormControl pb="12px" isRequired>
             <FormLabel htmlFor="email" fontSize="xl">
               Email address
@@ -132,19 +136,21 @@ const RegisterPage: NextPage = () => {
               Create account
             </Button>
           </Center>
+          <Stack mt="4" align="center">
+            <Text fontSize="xl" align="center">
+              Already have an account?
+            </Text>
+            <Link href={Routes.loginPage}>
+              <Text
+                fontSize="xl"
+                color="highlightSecondary"
+                className={css.createAccount}
+              >
+                Sign in
+              </Text>
+            </Link>
+          </Stack>
         </Box>
-        <Text fontSize="xl" align="center">
-          Already have an account?
-        </Text>
-        <Link href={Routes.loginPage}>
-          <Text
-            fontSize="xl"
-            color="highlightSecondary"
-            className={css.createAccount}
-          >
-            Sign in
-          </Text>
-        </Link>
       </Center>
     </LandingPageHOC>
   );

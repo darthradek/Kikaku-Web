@@ -15,14 +15,13 @@ import {
   Spacer,
   Box,
   HStack,
-  Stack,
   Avatar,
   IconButton,
   Icon,
   Text,
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import SystemNavItems from "../../../../static-data/SystemNavItem";
+import SystemNavItems from "../../../../static-data/SystemNavItems";
 interface IProps {}
 
 function SystemSidebar(props: IProps) {
@@ -36,7 +35,7 @@ function SystemSidebar(props: IProps) {
 
   // SECTION: Render
   return (
-    <>
+    <Box>
       <Box px="4" as="header" position="fixed" w="100%" bg="white">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
@@ -175,7 +174,7 @@ function SystemSidebar(props: IProps) {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-    </>
+    </Box>
   );
 }
 

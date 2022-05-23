@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     colors: {
       backgroundPrimary: "#F2F2F2",
       backgroundSecondary: "#43474b",
+      backgroundTertiary: "#7F8487",
       highlightPrimary: "#ffc107",
       highlightSecondary: "#7952b3",
     },
