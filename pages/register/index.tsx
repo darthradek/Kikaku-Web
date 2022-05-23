@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
 import Routes from "../../global/Routes";
 import Router from "next/router";
-import { IRegisterUserDTO } from "../../utils/dtos/user/RegisterUserDTO";
+import { IRegisterUserDTO } from "../../utils/dtos/user/IRegisterUserDTO";
 import { useToast } from "@chakra-ui/react";
 
 const RegisterPage: NextPage = () => {

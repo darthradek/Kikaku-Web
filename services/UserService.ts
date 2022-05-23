@@ -1,5 +1,5 @@
-import { ILoginUserDTO } from "../utils/dtos/user/LoginUserDTO";
-import { IRegisterUserDTO } from "../utils/dtos/user/RegisterUserDTO";
+import { ILoginUserDTO } from "../utils/dtos/user/ILoginUserDTO";
+import { IRegisterUserDTO } from "../utils/dtos/user/IRegisterUserDTO";
 import FetchService from "./core/FetchService";
 
 class UserService {

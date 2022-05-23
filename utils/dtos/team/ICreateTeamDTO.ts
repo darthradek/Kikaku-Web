@@ -1,4 +1,4 @@
-export interface CreateTeamDTO {
+export interface ICreateTeamDTO {
   name: string;
   description: string;
   members: Array<string>;

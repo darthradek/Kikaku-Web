@@ -16,7 +16,7 @@ import { FiPlus, FiStar, FiTrello, FiUsers } from "react-icons/fi";
 
 interface IProps {}
 
-function Component(props: IProps) {
+function TeamEntityCard(props: IProps) {
   // SECTION: Props
   const {} = props;
 
@@ -143,4 +143,4 @@ function Component(props: IProps) {
   );
 }
 
-export default Component;
+export default TeamEntityCard;

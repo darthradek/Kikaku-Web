@@ -15,7 +15,6 @@ import {
   FormLabel,
   Input,
   useToast,
-  Link,
   Center,
   Heading,
 } from "@chakra-ui/react";
@@ -28,7 +27,7 @@ import { FiUsers } from "react-icons/fi";
 import SystemPageHeader from "../../../ui/components/system/SystemPageHeader";
 import TeamEntityCard from "../../../ui/components/system/TeamEntityCard";
 import { useEffect, useState } from "react";
-import { CreateTeamDTO } from "../../../utils/dtos/team/CreateTeamDTO";
+import { ICreateTeamDTO } from "../../../utils/dtos/team/ICreateTeamDTO";
 import TeamService from "../../../services/TeamService";
 
 function TeamsPage(props: ISystemPageHOCProps) {
@@ -49,7 +48,7 @@ function TeamsPage(props: ISystemPageHOCProps) {
 
   // SECTION: Services calls
   async function createTeam() {
-    const createTeamDTO: CreateTeamDTO = {
+    const createTeamDTO: ICreateTeamDTO = {
       name: teamName,
       description: teamDescription,
       members: ["626a68df3376728dedcf5d16"],

@@ -16,7 +16,7 @@ import {
 import LandingPageHOC from "../../ui/hocs/landing-page-hoc/LandingPageHOC";
 import Routes from "../../global/Routes";
 import UserService from "../../services/UserService";
-import { ILoginUserDTO } from "../../utils/dtos/user/LoginUserDTO";
+import { ILoginUserDTO } from "../../utils/dtos/user/ILoginUserDTO";
 import { useEffect, useState } from "react";
 import router from "next/router";
 import AuthService from "../../services/AuthService";

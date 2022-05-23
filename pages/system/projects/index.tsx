@@ -18,33 +18,87 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
-import { FiPlus, FiTrello } from "react-icons/fi";
+import type { GetServerSideProps } from "next";
+import Router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FiTrello } from "react-icons/fi";
+import Routes from "../../../global/Routes";
+import ProjectService from "../../../services/ProjectService";
+import ProjectEntityCard from "../../../ui/components/system/ProjectEntityCard";
 import SystemPageHeader from "../../../ui/components/system/SystemPageHeader";
-import TeamEntityCard from "../../../ui/components/system/TeamEntityCard";
 import SystemPageHOC, {
   ISystemPageHOCProps,
   systemPageServerSideProps,
 } from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
-import css from "./index.module.scss";
+import { ICreateProjectDTO } from "../../../utils/dtos/project/ICreateProjectDTO";
+import { IProject } from "../../../utils/interfaces/IProject";
 
 function ProjectsPage(props: ISystemPageHOCProps) {
   // SECTION: Props
   const {} = props;
 
   // SECTION: Constants & Variables
+  const router = useRouter();
   const toast = useToast();
 
   // SECTION: Hooks State - Data
-  const [projects, setProjects] = useState();
+  const [projects, setProjects] = useState<IProject[]>();
 
+  // SECTION: Hooks Effect - Data
+  useEffect(() => {
+    getAllProjectsCreatedByUser();
+  }, []);
+
+  // SECTION: Services
+  const projectService = new ProjectService();
+
+  // SECTION: Services calls
+  async function createNewProject() {
+    const createProjectDTO: ICreateProjectDTO = {
+      name: projectName,
+      objective: projectObjective,
+      description: projectDescription,
+      deadline: "2022-05-22T23:51:52.337Z",
+      created_by: "626a6ac4ab353804343bfcb2",
+    };
+    projectService.createProject(createProjectDTO).then((response: any) => {
+      console.log(response);
+      toast({
+        title: "Project created successfully!",
+        position: "top-left",
+        description:
+          "Feel free to jump into project and start planning your process",
+        status: "success",
+        duration: 1350,
+        isClosable: true,
+      });
+      onClose();
+    });
+  }
+
+  async function getAllProjectsCreatedByUser() {
+    projectService
+      .getAllProjectsCreatedByUser("626a6ac4ab353804343bfcb2")
+      .then((response: IProject[]) => {
+        setProjects(response);
+      });
+  }
+  console.log(projects, "state");
   // SECTION: UI Constants & Variables
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // SECTION: Hooks State - UI
   const [projectName, setProjectName] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
+  const [projectObjective, setProjectObjective] = useState<string>("");
+
+  // SECTION: UI Events
+  function onProjectClick(project: IProject) {
+    router.push({
+      pathname: Routes.systemProjectsPage + "/[id]",
+      query: { id: project._id },
+    });
+  }
 
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
@@ -56,8 +110,14 @@ function ProjectsPage(props: ISystemPageHOCProps) {
       />
       <Box>
         {projects ? (
-          <Flex>
-            <TeamEntityCard />
+          <Flex gap="4">
+            {projects?.map((project: IProject, index) => {
+              return (
+                <Box onClick={() => onProjectClick(project)} key={index}>
+                  <ProjectEntityCard project={project} />
+                </Box>
+              );
+            })}
           </Flex>
         ) : (
           <Center>
@@ -130,7 +190,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
                 borderColor="grey"
                 _hover={{ borderColor: "blue" }}
                 onChange={(newValue) =>
-                  setProjectDescription(newValue.target.value)
+                  setProjectObjective(newValue.target.value)
                 }
               />
             </FormControl>
@@ -158,7 +218,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
                 boxShadow: "lg",
               }}
               variant="ghost"
-              // onClick={() => createTeam()}
+              onClick={() => createNewProject()}
             >
               Create
             </Button>

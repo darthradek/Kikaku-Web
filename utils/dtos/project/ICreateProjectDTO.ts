@@ -1,8 +1,8 @@
-export interface ICreateTeamDTO {
+export interface ICreateProjectDTO {
   name: string;
   objective: string;
   description: string;
-  status?: 1;
+  status?: number;
   deadline: string;
   team?: string;
   created_by: string;
