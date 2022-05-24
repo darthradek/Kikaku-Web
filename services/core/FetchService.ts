@@ -1,6 +1,6 @@
 class FetchService {
   public fetch(url: string, type: string, data?: object): Promise<any> {
-    return fetch(`http://localhost:3000/` + `${url}`, {
+    return fetch(`https://kikaku-app.herokuapp.com` + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
@@ -21,7 +21,7 @@ class FetchService {
     type: string,
     data?: object
   ): Promise<any> {
-    return fetch(`http://localhost:3000/` + `${url}`, {
+    return fetch(`https://kikaku-app.herokuapp.com` + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
