@@ -29,6 +29,7 @@ import TeamEntityCard from "../../../ui/components/system/TeamEntityCard";
 import { useEffect, useState } from "react";
 import { ICreateTeamDTO } from "../../../utils/dtos/team/ICreateTeamDTO";
 import TeamService from "../../../services/TeamService";
+import { ITeam } from "../../../utils/interfaces/ITeam";
 
 function TeamsPage(props: ISystemPageHOCProps) {
   // SECTION: Props
@@ -38,7 +39,7 @@ function TeamsPage(props: ISystemPageHOCProps) {
   const toast = useToast();
 
   // SECTION: Hooks State - Data
-  const [teams, setTeams] = useState();
+  const [teams, setTeams] = useState<ITeam[]>([]);
 
   // SECTION: Hooks Effect - Data
   useEffect(() => {}, []);
@@ -56,18 +57,23 @@ function TeamsPage(props: ISystemPageHOCProps) {
       created_by: "626a6ac4ab353804343bfcb2",
     };
     teamService.createTeam(createTeamDTO).then((response: any) => {
-      console.log(response);
       toast({
         title: "Team created successfully!",
         position: "top-left",
-        description: "Feel free to activate it and start team work",
+        description: "Feel free to activate freshly created team",
         status: "success",
         duration: 1350,
         isClosable: true,
       });
+      const teamResponse: ITeam = response;
+      const tempTeams: ITeam[] = teams.filter((team) => {
+        if (team._id !== teamResponse._id) {
+          return team;
+        }
+      });
+      tempTeams.push(teamResponse);
+      setTeams(tempTeams);
       onClose();
-      // authService.saveToken(response.token);
-      // router.push(Routes.systemDashboardPage);
     });
   }
 
@@ -98,12 +104,19 @@ function TeamsPage(props: ISystemPageHOCProps) {
         <Box>
           {teams ? (
             <Flex>
-              <TeamEntityCard />
+              {teams?.map((team: ITeam, index) => {
+                return (
+                  <Box key={index}>
+                    <TeamEntityCard />
+                    {team.created_at}
+                  </Box>
+                );
+              })}
             </Flex>
           ) : (
             <Center>
               <Box maxW="32rem">
-                <img src="/illus/dashboard-illu.svg" />
+                <img src="/illus/team-illu.svg" />
                 <Center>
                   <Heading mb="4" color="backgroundPrimary">
                     Dont have a team yet?

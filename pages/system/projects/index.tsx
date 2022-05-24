@@ -32,17 +32,20 @@ import SystemPageHOC, {
 } from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
 import { ICreateProjectDTO } from "../../../utils/dtos/project/ICreateProjectDTO";
 import { IProject } from "../../../utils/interfaces/IProject";
+import { IUser } from "../../../utils/interfaces/IUser";
 
 function ProjectsPage(props: ISystemPageHOCProps) {
   // SECTION: Props
   const {} = props;
 
   // SECTION: Constants & Variables
+  const loggedInUser = props.systemPageProps.loggedInUser;
+  const authToken = props.systemPageProps.token;
   const router = useRouter();
   const toast = useToast();
 
   // SECTION: Hooks State - Data
-  const [projects, setProjects] = useState<IProject[]>();
+  const [projects, setProjects] = useState<IProject[]>([]);
 
   // SECTION: Hooks Effect - Data
   useEffect(() => {
@@ -59,31 +62,41 @@ function ProjectsPage(props: ISystemPageHOCProps) {
       objective: projectObjective,
       description: projectDescription,
       deadline: "2022-05-22T23:51:52.337Z",
-      created_by: "626a6ac4ab353804343bfcb2",
+      created_by: loggedInUser._id,
     };
-    projectService.createProject(createProjectDTO).then((response: any) => {
-      console.log(response);
-      toast({
-        title: "Project created successfully!",
-        position: "top-left",
-        description:
-          "Feel free to jump into project and start planning your process",
-        status: "success",
-        duration: 1350,
-        isClosable: true,
+
+    projectService
+      .createProject(createProjectDTO, authToken)
+      .then((response: any) => {
+        toast({
+          title: "Project created successfully!",
+          position: "top-left",
+          description:
+            "Feel free to jump into project and start planning your process",
+          status: "success",
+          duration: 1350,
+          isClosable: true,
+        });
+        const projectResponse: IProject = response;
+        const tempProjects: IProject[] = projects.filter((project) => {
+          if (project._id !== projectResponse._id) {
+            return project;
+          }
+        });
+        tempProjects.push(projectResponse);
+        setProjects(tempProjects);
+        onClose();
       });
-      onClose();
-    });
   }
 
   async function getAllProjectsCreatedByUser() {
     projectService
-      .getAllProjectsCreatedByUser("626a6ac4ab353804343bfcb2")
+      .getAllProjectsCreatedByUser("628c02c32e05e834c7383d99", authToken)
       .then((response: IProject[]) => {
         setProjects(response);
       });
   }
-  console.log(projects, "state");
+
   // SECTION: UI Constants & Variables
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -109,8 +122,8 @@ function ProjectsPage(props: ISystemPageHOCProps) {
         onCreateModalOpen={onOpen}
       />
       <Box>
-        {projects ? (
-          <Flex gap="4">
+        {projects?.length > 0 ? (
+          <Flex flexFlow="wrap" gap="9">
             {projects?.map((project: IProject, index) => {
               return (
                 <Box onClick={() => onProjectClick(project)} key={index}>
@@ -129,7 +142,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
                 </Heading>
               </Center>
               <Text fontSize="xl" color="backgroundPrimary" align="center">
-                Create your first project to start planning your project
+                Create your first project and start planning your project
                 workflow! 🥳
               </Text>
               <Center>

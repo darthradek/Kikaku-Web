@@ -1,5 +1,7 @@
 import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import type { GetServerSideProps } from "next";
+import Link from "next/link";
+import Routes from "../../../global/Routes";
 import SystemPageHOC, {
   ISystemPageHOCProps,
   systemPageServerSideProps,
@@ -35,22 +37,26 @@ function DashboardPage(props: ISystemPageHOCProps) {
             smart “Daily Agenda” every morning.
           </Text>
           <Stack spacing={6} direction={"row"}>
-            <Button
-              px={6}
-              bg={"#7952b3"}
-              color="white"
-              _hover={{ bg: "#7952b3" }}
-            >
-              Create Project
-            </Button>
-            <Button
-              bg="#ffc107"
-              color="#43474b"
-              _hover={{ bg: "#ffc107" }}
-              px={6}
-            >
-              Create Team
-            </Button>
+            <Link href={Routes.systemProjectsPage}>
+              <Button
+                px={6}
+                bg={"#7952b3"}
+                color="white"
+                _hover={{ bg: "#7952b3" }}
+              >
+                Create Project
+              </Button>
+            </Link>
+            <Link href={Routes.systemTeamsPage}>
+              <Button
+                bg="#ffc107"
+                color="#43474b"
+                _hover={{ bg: "#ffc107" }}
+                px={6}
+              >
+                Create Team
+              </Button>
+            </Link>
           </Stack>
         </Stack>
       </Container>

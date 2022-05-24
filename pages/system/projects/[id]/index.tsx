@@ -6,45 +6,43 @@ import {
   Heading,
   useToast,
   Text,
-  ModalFooter,
-  ModalContent,
-  Modal,
-  ModalBody,
-  FormControl,
-  Input,
-  FormLabel,
-  ModalCloseButton,
-  ModalHeader,
-  ModalOverlay,
   useDisclosure,
   Icon,
 } from "@chakra-ui/react";
 import type { GetServerSideProps } from "next";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FiTrello } from "react-icons/fi";
+import { FiPlus, FiTrello } from "react-icons/fi";
+import Routes from "../../../../global/Routes";
 import ProjectService from "../../../../services/ProjectService";
 import ProjectStageService from "../../../../services/ProjectStageService";
+import ProjectStagesWrapper from "../../../../ui/components/system/ProjectStagesWrapper";
+import ProjectStageWrapper from "../../../../ui/components/system/ProjectStagesWrapper";
 import SystemPageHeader from "../../../../ui/components/system/SystemPageHeader";
+import TaskEntityCard from "../../../../ui/components/system/TaskEntityCard";
 import SystemPageHOC, {
   ISystemPageHOCProps,
   systemPageServerSideProps,
 } from "../../../../ui/hocs/system-page-hoc/SystemPageHOC";
+import { ICreateProjectStageDTO } from "../../../../utils/dtos/project-stage/ICreateProjectStageDTO";
 import { IProject } from "../../../../utils/interfaces/IProject";
 import { IProjectStage } from "../../../../utils/interfaces/IProjectStage";
+import { ITask } from "../../../../utils/interfaces/ITask";
 
 function SelectedProjectPage(props: ISystemPageHOCProps) {
   // SECTION: Props
   const {} = props;
 
   // SECTION: Constants & Variables
+  const loggedInUser = props.systemPageProps.loggedInUser;
+  const authToken = props.systemPageProps.token;
   const router = useRouter();
   const { id } = router.query as any;
   const toast = useToast();
 
   // SECTION: Hooks State - Data
   const [project, setProject] = useState<IProject>();
-  const [projectStages, setProjectStages] = useState<IProjectStage[]>();
+  const [projectStages, setProjectStages] = useState<IProjectStage[]>([]);
 
   // SECTION: Hooks Effect - Data
   useEffect(() => {
@@ -59,49 +57,149 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
 
   // SECTION: Services calls
   async function getProjectById(id: string) {
-    projectService.getProjectById(id).then((response: IProject) => {
+    projectService.getProjectById(id, authToken).then((response: IProject) => {
       setProject(response);
     });
   }
 
   async function getAllProjectStagesForProject(id: string) {
     projectStageService
-      .getAllProjectStagesForProject(id)
+      .getAllProjectStagesForProject(id, authToken)
       .then((response: IProjectStage[]) => {
         setProjectStages(response);
       });
   }
-  console.log(projectStages);
+
+  async function createNewProjectStage() {
+    const createProjectStageDTO: ICreateProjectStageDTO = {
+      title: newProjectStageTitle,
+      project_id: id,
+    };
+    projectStageService
+      .createProjectStage(createProjectStageDTO, authToken)
+      .then((response: IProjectStage) => {
+        toast({
+          title: "Project Stage created successfully!",
+          position: "top-left",
+          description: "Feel free to assign some tasks to it",
+          status: "success",
+          duration: 1350,
+          isClosable: true,
+        });
+        setIsCreateProjectStageOpen(false);
+        const projectStageResponse: IProjectStage = response;
+        const tempProjectStages: IProjectStage[] = projectStages?.filter(
+          (projectStage) => {
+            if (projectStage._id !== projectStageResponse._id) {
+              return project;
+            }
+          }
+        );
+        tempProjectStages.push(projectStageResponse);
+        setProjectStages(tempProjectStages);
+      });
+  }
+
+  async function createNewTask() {
+    console.log("cipa");
+  }
+
+  async function deleteProjectById() {
+    projectService
+      .deleteProjectById(id, authToken)
+      .then((response: IProject) => {
+        console.log("respo", response);
+        toast({
+          title: response?.name + " Deleted successfully",
+          position: "top-left",
+          status: "success",
+          duration: 1350,
+          isClosable: true,
+        });
+        router.push(Routes.systemProjectsPage);
+      });
+  }
+
   // SECTION: UI Constants & Variables
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // SECTION: Hooks State - UI
-  const [projectName, setProjectName] = useState<string>("");
-  const [projectDescription, setProjectDescription] = useState<string>("");
-  const [projectObjective, setProjectObjective] = useState<string>("");
+  const [isCreateProjectStageOpen, setIsCreateProjectStageOpen] =
+    useState<boolean>(false);
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
+  //LINK: newProjectStage
+  const [newProjectStageTitle, setNewProjectStageTitle] = useState<string>("");
+  //LINK: newTask
+  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [newTaskContent, setNewTaskContent] = useState<string>("");
+  const [newTaskDeadline, setNewTaskDeadline] = useState<string>("");
 
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
-      <Box mb="6" pb="2">
-        <Flex justifyContent="space-between" align="center">
-          <Flex align="center">
-            <Icon mr="4" fontSize="35" color="highlightPrimary" as={FiTrello} />
-            <Text color="backgroundPrimary" fontSize={"4xl"} fontWeight="600">
-              Selected Project: {"" + project?.name}
-            </Text>
-          </Flex>
-        </Flex>
-      </Box>
+      <SystemPageHeader
+        headingText="Selected Project"
+        headingIcon={FiTrello}
+        createButtonLabel="Project Stage"
+        onDelete={() => {
+          deleteProjectById();
+        }}
+      />
       <Box>
         {projectStages ? (
-          <Flex gap="4">
+          <Flex flexWrap="wrap" justifyContent="flex-start" gap="9">
             {projectStages?.map((projectStage: IProjectStage, index) => {
               return (
-                <Box key={index}>
-                  <Box>{projectStage.title}</Box>
-                </Box>
+                <ProjectStageWrapper
+                  key={index}
+                  projectStageTitle={projectStage.title}
+                >
+                  {projectStage.tasks?.map((task: ITask, index) => {
+                    return (
+                      <TaskEntityCard
+                        title={task.title}
+                        content={task.content}
+                        key={index}
+                        setTaskTitle={(data: string) => {
+                          setNewTaskTitle(data);
+                        }}
+                      />
+                    );
+                  })}
+                </ProjectStageWrapper>
               );
             })}
+            {isCreateProjectStageOpen ? (
+              <ProjectStagesWrapper
+                createProjectStage={createNewProjectStage}
+                cancelCreation={() => {
+                  setIsCreateProjectStageOpen(false);
+                }}
+                setNewProjectStageTitle={(data: string) =>
+                  setNewProjectStageTitle(data)
+                }
+              />
+            ) : (
+              <Button
+                fontWeight={600}
+                color={"backgroundSecondary"}
+                bg={"highlightPrimary"}
+                size="md"
+                _hover={{
+                  color: "backgroundSecondary",
+                  boxShadow: "lg",
+                }}
+                onClick={() => setIsCreateProjectStageOpen(true)}
+              >
+                <Icon
+                  fontSize="2xl"
+                  mr="2"
+                  size={"md"}
+                  color="backgroundSecondary"
+                  as={FiPlus}
+                />
+                Add Project Stage
+              </Button>
+            )}
           </Flex>
         ) : (
           <Center>

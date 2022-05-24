@@ -3,11 +3,13 @@ import Router from "next/router";
 import React from "react";
 import Routes from "../../../global/Routes";
 import AuthService from "../../../services/AuthService";
+import { IUser } from "../../../utils/interfaces/IUser";
 import SystemLayout from "../../layouts/system/system-layout/SystemLayout";
 import PageBody from "../PageBody";
 
 interface ISystemPageProps {
-  loggedInUser: object;
+  token: string;
+  loggedInUser: IUser;
   page?: any;
 }
 
@@ -19,14 +21,14 @@ export interface ISystemPageHOCProps {
 function SystemPageHOC(props: ISystemPageHOCProps) {
   // MARK: Props
   const { systemPageProps, children } = props;
-  const { loggedInUser, page } = systemPageProps;
-  console.log(loggedInUser);
+  const { loggedInUser, token, page } = systemPageProps;
+
   //MARK: Render
   return (
     <>
       {systemPageProps ? (
         <PageBody>
-          <SystemLayout>{children}</SystemLayout>
+          <SystemLayout loggedInUser={loggedInUser}>{children}</SystemLayout>
         </PageBody>
       ) : (
         <>error</>
@@ -35,24 +37,20 @@ function SystemPageHOC(props: ISystemPageHOCProps) {
   );
 }
 
-// SystemPageHOC.getInitialProps = async (ctx: NextPageContext) => {
-//   const tokenService = new AuthService();
-//   await tokenService.validateTokenSSR(ctx);
-//   return {};
-// };
-
 export const systemPageServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const authService = new AuthService();
   const response = await authService.validateTokenSSR(ctx);
-  const loggedInUser: object = response?.user;
+  const loggedInUser: IUser = response?.user[0];
+  const token: string = response?.token;
 
   if (loggedInUser) {
     const systemPageProps: ISystemPageHOCProps = {
       systemPageProps: {
-        // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
+        token: token,
         loggedInUser: loggedInUser,
+        // page: AdminPagesMetadata.getPageMetadata(ctx.req.url),
       },
     };
     return JSON.parse(JSON.stringify({ props: systemPageProps }));

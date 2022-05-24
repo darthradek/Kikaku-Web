@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
@@ -9,12 +10,18 @@ interface IProps {
   headingIcon: IconType;
   createButtonLabel: string;
   onCreateModalOpen?: Function;
+  onDelete?: Function;
 }
 
 function SystemPageHeader(props: IProps) {
   // SECTION: Props
-  const { headingText, headingIcon, createButtonLabel, onCreateModalOpen } =
-    props;
+  const {
+    headingText,
+    headingIcon,
+    createButtonLabel,
+    onCreateModalOpen,
+    onDelete,
+  } = props;
 
   // SECTION: Constants & Variables
 
@@ -61,29 +68,46 @@ function SystemPageHeader(props: IProps) {
             {headingText}
           </Text>
         </Flex>
-        {onCreateModalOpen && (
-          <Button
-            fontWeight={600}
-            color={"backgroundSecondary"}
-            bg={"highlightPrimary"}
-            size="md"
-            _hover={{
-              color: "backgroundSecondary",
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
-            onClick={() => onCreateModalOpen()}
-          >
-            <Icon
-              fontSize="2xl"
-              mr="2"
+        <Flex>
+          {onDelete && (
+            <IconButton
               size={"md"}
+              mr={onCreateModalOpen ? "4" : "0"}
+              icon={<DeleteIcon />}
+              aria-label={"Open Menu"}
+              bg="backgroundPrimary"
               color="backgroundSecondary"
-              as={FiPlus}
+              _hover={{
+                bg: "red",
+                color: "backgroundPrimary",
+              }}
+              onClick={() => onDelete()}
             />
-            Create New {createButtonLabel}
-          </Button>
-        )}
+          )}
+          {onCreateModalOpen && (
+            <Button
+              fontWeight={600}
+              color={"backgroundSecondary"}
+              bg={"highlightPrimary"}
+              size="md"
+              _hover={{
+                color: "backgroundSecondary",
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              onClick={() => onCreateModalOpen()}
+            >
+              <Icon
+                fontSize="2xl"
+                mr="2"
+                size={"md"}
+                color="backgroundSecondary"
+                as={FiPlus}
+              />
+              Create New {createButtonLabel}
+            </Button>
+          )}
+        </Flex>
       </Flex>
     </Box>
   );

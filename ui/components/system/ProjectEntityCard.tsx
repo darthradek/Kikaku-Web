@@ -6,14 +6,19 @@ import {
   List,
   ListIcon,
   ListItem,
-  useColorModeValue,
   Stack,
   Flex,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { FiCalendar, FiPlus, FiStar, FiTrello, FiUsers } from "react-icons/fi";
+import {
+  FiArrowUpCircle,
+  FiCalendar,
+  FiPieChart,
+  FiStar,
+  FiTarget,
+  FiUsers,
+} from "react-icons/fi";
 import { IProject } from "../../../utils/interfaces/IProject";
 import { ITeam } from "../../../utils/interfaces/ITeam";
 
@@ -52,98 +57,110 @@ function ProjectEntityCard(props: IProps) {
 
   // SECTION: Render
   return (
-    <Box
-      maxW={"280px"}
-      w={"full"}
-      bg={"white"}
-      boxShadow={"2xl"}
-      rounded={"md"}
-      overflow={"hidden"}
-    >
-      <Box mt="2" pr="4" pl="4">
-        <Stack mb={2} direction={"row"} align="center" justify={"left"}>
-          <Text fontSize={"3xl"} fontWeight={800}>
-            {project.name}
-          </Text>
-        </Stack>
-        {team && (
-          <HStack
-            textAlign={"center"}
-            justifyContent={"left"}
-            spacing={1}
-            align={"center"}
-            mt="2"
-            pl="1"
-            mb="4"
+    <Box>
+      {project && (
+        <Box>
+          <Flex
+            rounded={"md"}
+            maxW={"280px"}
+            w={"full"}
+            flexDirection="column"
+            justifyContent="space-between"
+            height={"25vh"}
+            bg={"white"}
+            boxShadow={"2xl"}
           >
-            <Text
-              fontSize={"sm"}
-              fontWeight={400}
-              bg="backgroundSecondary"
-              p={1}
-              px={3}
-              color={"backgroundPrimary"}
-              rounded={"xl"}
-            >
-              Andrzej
-            </Text>
-            <Text
-              fontSize={"sm"}
-              fontWeight={400}
-              bg="backgroundSecondary"
-              p={1}
-              px={3}
-              color={"backgroundPrimary"}
-              rounded={"xl"}
-            >
-              Piotr
-            </Text>
-            <Text
-              fontSize={"sm"}
-              fontWeight={400}
-              bg="backgroundSecondary"
-              p={1}
-              px={3}
-              color={"backgroundPrimary"}
-              rounded={"xl"}
-            >
-              Misio
-            </Text>
-          </HStack>
-        )}
-      </Box>
-      <Box bg={"backgroundPrimary"} px={6} pt="4" pb="5">
-        <List spacing={3}>
-          <ListItem>
-            <ListIcon as={FiStar} color="highlightPrimary" />
-            {project.created_by.email}
-          </ListItem>
-          {/* <ListItem>
-            <ListIcon as={FiUsers} color="highlightPrimary" />
-            team name
-          </ListItem> */}
-          <ListItem>
-            <Flex align={"center"}>
-              <ListIcon as={FiCalendar} color="highlightPrimary" />
-              {project.deadline}
-            </Flex>
-          </ListItem>
-        </List>
-        <Button
-          mt={6}
-          w={"full"}
-          bg={"highlightSecondary"}
-          color={"backgroundPrimary"}
-          rounded={"md"}
-          boxShadow={"white"}
-          _hover={{
-            bg: "highlightPrimary",
-            color: "backgroundSecondary",
-          }}
-        >
-          Manage Project
-        </Button>
-      </Box>
+            <Box justifyContent="" mt="2" pr="4" pl="4">
+              <Stack mb="4" direction={"column"} align="left">
+                <Text mt="2" fontSize={"2xl"} fontWeight={800}>
+                  {project?.name}
+                </Text>
+                <Text fontSize={"sm"}>{project?.description}</Text>
+              </Stack>
+              {team && (
+                <HStack
+                  textAlign={"center"}
+                  justifyContent={"left"}
+                  spacing={1}
+                  align={"center"}
+                  mt="2"
+                  pl="1"
+                  mb="4"
+                >
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={400}
+                    bg="backgroundSecondary"
+                    p={1}
+                    px={3}
+                    color={"backgroundPrimary"}
+                    rounded={"xl"}
+                  >
+                    Andrzej
+                  </Text>
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={400}
+                    bg="backgroundSecondary"
+                    p={1}
+                    px={3}
+                    color={"backgroundPrimary"}
+                    rounded={"xl"}
+                  >
+                    Piotr
+                  </Text>
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={400}
+                    bg="backgroundSecondary"
+                    p={1}
+                    px={3}
+                    color={"backgroundPrimary"}
+                    rounded={"xl"}
+                  >
+                    Misio
+                  </Text>
+                </HStack>
+              )}
+            </Box>
+            <Box rounded={"md"} bg={"backgroundPrimary"} px={6} pt="4" pb="5">
+              <List spacing={3}>
+                <ListItem>
+                  <Flex align={"center"}>
+                    <ListIcon as={FiTarget} color="highlightPrimary" />
+                    {project?.objective}
+                  </Flex>
+                  <Flex align={"center"}>
+                    <ListIcon as={FiArrowUpCircle} color="highlightPrimary" />
+                    Kickstared
+                  </Flex>
+                  <Flex align={"center"}>
+                    <ListIcon as={FiUsers} color="highlightPrimary" />1
+                  </Flex>
+                  <Flex align={"center"}>
+                    <ListIcon as={FiCalendar} color="highlightPrimary" />
+                    {project?.deadline}
+                  </Flex>
+                </ListItem>
+              </List>
+              <Button
+                mt={6}
+                w={"full"}
+                bg={"highlightSecondary"}
+                color={"backgroundPrimary"}
+                rounded={"md"}
+                boxShadow={"white"}
+                _hover={{
+                  bg: "highlightPrimary",
+                  color: "backgroundSecondary",
+                }}
+              >
+                Manage Project
+              </Button>
+            </Box>
+          </Flex>
+        </Box>
+      )}
     </Box>
   );
 }
