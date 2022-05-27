@@ -1,6 +1,10 @@
+import SystemInfo from "../../SystemInfo";
+
 class FetchService {
   public fetch(url: string, type: string, data?: object): Promise<any> {
-    return fetch(`http://localhost:3000/` + `${url}`, {
+    debugger;
+    console.log(SystemInfo.getEnvironment());
+    return fetch(SystemInfo.getEnvironment() + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
@@ -21,7 +25,7 @@ class FetchService {
     type: string,
     data?: object
   ): Promise<any> {
-    return fetch(`http://localhost:3000/` + `${url}`, {
+    return fetch(SystemInfo.getEnvironment() + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",

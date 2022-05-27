@@ -1,6 +1,7 @@
 const express = require("express");
 const next = require("next");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const { default: SystemInfo } = require("./SystemInfo");
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -9,7 +10,7 @@ const handle = app.getRequestHandler();
 
 const apiPaths = {
     "/api": {
-        target: "http://localhost:4000",
+        target: SystemInfo.api_url,
         pathRewrite: {
             "^/api": "/api",
         },
@@ -34,7 +35,7 @@ app
 
         server.listen(port, (err) => {
             if (err) throw err;
-            console.log(`> Ready on http://localhost:${port}`);
+            console.log(`> Ready on ${SystemInfo.api_url}:${port}`);
         });
     })
     .catch((err) => {
