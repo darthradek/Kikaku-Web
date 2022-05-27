@@ -2,7 +2,7 @@ import { ICreateProjectStageDTO } from "../utils/dtos/project-stage/ICreateProje
 import FetchService from "./core/FetchService";
 
 class ProjectStageService {
-  private readonly projectStageUrl: string = "projectStages";
+  private readonly projectStageUrl: string = "/projectStages";
 
   public async createProjectStage(data: ICreateProjectStageDTO, token: string) {
     const response = FetchService.fetchAuthed(

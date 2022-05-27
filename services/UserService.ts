@@ -3,7 +3,7 @@ import { IRegisterUserDTO } from "../utils/dtos/user/IRegisterUserDTO";
 import FetchService from "./core/FetchService";
 
 class UserService {
-  private readonly userUrl: string = "users";
+  private readonly userUrl: string = "/users";
 
   public async registerUser(data: IRegisterUserDTO) {
     const response = FetchService.fetch(
