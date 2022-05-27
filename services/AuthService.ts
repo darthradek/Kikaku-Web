@@ -12,11 +12,7 @@ class AuthService {
   }
 
   public async authenticateToken(token: string): Promise<any> {
-    const response = FetchService.fetchAuthed(
-      `/api/users/authenticate`,
-      token,
-      "GET"
-    );
+    const response = FetchService.fetchAuthed(`authenticate`, token, "GET");
     return await response;
   }
 

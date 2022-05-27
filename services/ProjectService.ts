@@ -2,7 +2,7 @@ import { ICreateProjectDTO } from "../utils/dtos/project/ICreateProjectDTO";
 import FetchService from "./core/FetchService";
 
 class ProjectService {
-  private readonly projectUrl: string = "/api/projects";
+  private readonly projectUrl: string = "projects";
 
   public async createProject(data: ICreateProjectDTO, token: string) {
     const response = FetchService.fetchAuthed(

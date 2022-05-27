@@ -3,7 +3,7 @@ import AuthService from "./AuthService";
 import FetchService from "./core/FetchService";
 
 class TeamService {
-  private readonly teamUrl: string = "/api/teams";
+  private readonly teamUrl: string = "teams";
 
   public async createTeam(data: ICreateTeamDTO) {
     const response = FetchService.fetchAuthed(
