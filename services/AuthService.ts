@@ -12,13 +12,18 @@ class AuthService {
   }
 
   public async authenticateToken(token: string): Promise<any> {
-    const response = FetchService.fetchAuthed(`/authenticate`, token, "GET");
+    const response = FetchService.fetchAuthed(
+      `/users/authenticate`,
+      token,
+      "GET"
+    );
     return await response;
   }
 
   public async validateTokenSSR(ctx: GetServerSidePropsContext) {
     const cookies = new Cookies(ctx.req ? ctx.req.headers.cookie : null);
     const token = cookies.get("token");
+
     if (token) {
       const response = this.authenticateToken(token);
       return response;

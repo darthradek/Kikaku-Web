@@ -2,8 +2,6 @@ import SystemInfo from "../../SystemInfo";
 
 class FetchService {
   public fetch(url: string, type: string, data?: object): Promise<any> {
-    debugger;
-    console.log(SystemInfo.getEnvironment());
     return fetch(SystemInfo.getEnvironment() + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
