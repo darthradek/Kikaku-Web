@@ -91,7 +91,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
 
   async function getAllProjectsCreatedByUser() {
     projectService
-      .getAllProjectsCreatedByUser("628c02c32e05e834c7383d99", authToken)
+      .getAllProjectsCreatedByUser(loggedInUser._id, authToken)
       .then((response: IProject[]) => {
         setProjects(response);
       });

@@ -6,7 +6,7 @@ import { IconType } from "react-icons";
 import { FiPlus } from "react-icons/fi";
 
 interface IProps {
-  headingText: string;
+  headingText?: string;
   headingIcon: IconType;
   createButtonLabel: string;
   onCreateModalOpen?: Function;
@@ -55,6 +55,7 @@ function SystemPageHeader(props: IProps) {
       borderBottom="3px"
       borderStyle="dashed"
       borderColor="backgroundTertiary"
+      position="static"
     >
       <Flex justifyContent="space-between" align="center">
         <Flex align="center">

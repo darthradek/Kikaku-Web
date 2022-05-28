@@ -22,7 +22,15 @@ function SystemLayout(props: IProps) {
       <Box>
         <SystemSidebar loggedInUserName={loggedInUser.username} />
       </Box>
-      <Box pt="6rem" pl="2rem" pb="2rem" pr={"2rem"} minH="100vh" bg="#343a40">
+      <Box
+        pt="6rem"
+        pl="2rem"
+        pb="2rem"
+        pr={"2rem"}
+        minH="100vh"
+        w="auto"
+        bg="#343a40"
+      >
         {children}
       </Box>
     </Box>

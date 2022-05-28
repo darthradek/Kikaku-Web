@@ -136,17 +136,36 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
 
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
-      <SystemPageHeader
-        headingText="Selected Project"
-        headingIcon={FiTrello}
-        createButtonLabel="Project Stage"
-        onDelete={() => {
-          deleteProjectById();
-        }}
-      />
-      <Box>
+      <Box position="fixed" w="97.5%">
+        <SystemPageHeader
+          headingText={project?.name}
+          headingIcon={FiTrello}
+          createButtonLabel="Project Stage"
+          onCreateModalOpen={() => setIsCreateProjectStageOpen(true)}
+          onDelete={() => {
+            deleteProjectById();
+          }}
+        />
+      </Box>
+      <Box mt="5rem">
         {projectStages ? (
-          <Flex flexWrap="wrap" justifyContent="flex-start" gap="9">
+          <Flex
+            overflowY="hidden"
+            justifyContent="space-between"
+            width="auto"
+            gap="9"
+          >
+            {isCreateProjectStageOpen && (
+              <ProjectStagesWrapper
+                createProjectStage={createNewProjectStage}
+                cancelCreation={() => {
+                  setIsCreateProjectStageOpen(false);
+                }}
+                setNewProjectStageTitle={(data: string) =>
+                  setNewProjectStageTitle(data)
+                }
+              />
+            )}
             {projectStages?.map((projectStage: IProjectStage, index) => {
               return (
                 <ProjectStageWrapper
@@ -168,38 +187,6 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
                 </ProjectStageWrapper>
               );
             })}
-            {isCreateProjectStageOpen ? (
-              <ProjectStagesWrapper
-                createProjectStage={createNewProjectStage}
-                cancelCreation={() => {
-                  setIsCreateProjectStageOpen(false);
-                }}
-                setNewProjectStageTitle={(data: string) =>
-                  setNewProjectStageTitle(data)
-                }
-              />
-            ) : (
-              <Button
-                fontWeight={600}
-                color={"backgroundSecondary"}
-                bg={"highlightPrimary"}
-                size="md"
-                _hover={{
-                  color: "backgroundSecondary",
-                  boxShadow: "lg",
-                }}
-                onClick={() => setIsCreateProjectStageOpen(true)}
-              >
-                <Icon
-                  fontSize="2xl"
-                  mr="2"
-                  size={"md"}
-                  color="backgroundSecondary"
-                  as={FiPlus}
-                />
-                Add Project Stage
-              </Button>
-            )}
           </Flex>
         ) : (
           <Center>
