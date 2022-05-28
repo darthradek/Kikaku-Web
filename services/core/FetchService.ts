@@ -1,6 +1,8 @@
+import SystemInfo from "../../SystemInfo";
+
 class FetchService {
   public fetch(url: string, type: string, data?: object): Promise<any> {
-    return fetch(`https://kikaku-app.herokuapp.com` + `${url}`, {
+    return fetch(SystemInfo.getEnvironment() + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",
@@ -21,7 +23,7 @@ class FetchService {
     type: string,
     data?: object
   ): Promise<any> {
-    return fetch(`https://kikaku-app.herokuapp.com` + `${url}`, {
+    return fetch(SystemInfo.getEnvironment() + `${url}`, {
       body: data ? JSON.stringify(data) : null,
       headers: {
         Accept: "application/json",

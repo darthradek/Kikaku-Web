@@ -13,7 +13,7 @@ class AuthService {
 
   public async authenticateToken(token: string): Promise<any> {
     const response = FetchService.fetchAuthed(
-      `/api/users/authenticate`,
+      `/users/authenticate`,
       token,
       "GET"
     );
@@ -23,6 +23,7 @@ class AuthService {
   public async validateTokenSSR(ctx: GetServerSidePropsContext) {
     const cookies = new Cookies(ctx.req ? ctx.req.headers.cookie : null);
     const token = cookies.get("token");
+
     if (token) {
       const response = this.authenticateToken(token);
       return response;
