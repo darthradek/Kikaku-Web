@@ -13,6 +13,15 @@ class TaskService {
     );
     return await response;
   }
+
+  public async deleteTaskById(taskId: string, token: string) {
+    const response = FetchService.fetchAuthed(
+      this.taskUrl + `/delete/` + taskId,
+      token,
+      "DELETE"
+    );
+    return await response;
+  }
 }
 
 export default TaskService;

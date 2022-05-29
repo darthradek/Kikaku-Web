@@ -166,7 +166,10 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       .deleteProjectStageById(projectStageId, authToken)
       .then((response) => {
         toast({
-          title: response?.projectStage.title + " deleted successfully",
+          title:
+            "Project Stage: " +
+            response?.projectStage.title +
+            " deleted successfully",
           position: "top-left",
           status: "success",
           duration: 1550,
@@ -184,15 +187,29 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       });
   }
 
+  async function deleteTaskById(taskId: string) {
+    taskService.deleteTaskById(taskId, authToken).then((response) => {
+      const deletedTask: ITask = response.task;
+      toast({
+        title: "Task: " + deletedTask.title + " deleted successfully",
+        position: "top-left",
+        status: "success",
+        duration: 1550,
+        isClosable: true,
+      });
+      getAllProjectStagesForProject(id);
+    });
+  }
+
   async function deleteProjectById() {
     projectService
       .deleteProjectById(id, authToken)
       .then((response: IProject) => {
         toast({
-          title: response?.name + " Deleted successfully",
+          title: response?.name + " deleted successfully",
           position: "top-left",
           status: "success",
-          duration: 1350,
+          duration: 1550,
           isClosable: true,
         });
         router.push(Routes.systemProjectsPage);
@@ -218,21 +235,6 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       setNewTaskContent("");
     }
   }, [isCreateTaskOpen]);
-
-  async function openCreateTaskForm() {
-    projectService
-      .deleteProjectById(id, authToken)
-      .then((response: IProject) => {
-        toast({
-          title: response?.name + " Deleted successfully",
-          position: "top-left",
-          status: "success",
-          duration: 1350,
-          isClosable: true,
-        });
-        router.push(Routes.systemProjectsPage);
-      });
-  }
 
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
@@ -289,9 +291,12 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
                   {projectStage.tasks?.map((task: ITask, index) => {
                     return (
                       <TaskEntityCard
-                        title={task.title}
+                        task={task}
                         content={task.content}
                         key={index}
+                        onTaskDelete={(taskId: string) =>
+                          deleteTaskById(taskId)
+                        }
                         setTaskTitle={(data: string) => {
                           setNewTaskTitle(data);
                         }}

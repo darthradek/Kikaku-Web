@@ -18,14 +18,16 @@ import {
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { FiPlus, FiTrash, FiUsers } from "react-icons/fi";
+import { ITask } from "../../../utils/interfaces/ITask";
 import { IUser } from "../../../utils/interfaces/IUser";
 
 interface IProps {
-  title?: string;
+  task?: ITask;
   content?: string;
   assigned_users?: IUser[];
   onClose?: Function;
   onCreateTask?: Function;
+  onTaskDelete?: Function;
   setTaskTitle?: Function;
   setTaskContent?: Function;
 }
@@ -33,11 +35,12 @@ interface IProps {
 function TaskEntityCard(props: IProps) {
   // SECTION: Props
   const {
-    title,
+    task,
     content,
     assigned_users,
     onCreateTask,
     onClose,
+    onTaskDelete,
     setTaskTitle,
     setTaskContent,
   } = props;
@@ -166,7 +169,7 @@ function TaskEntityCard(props: IProps) {
               justify={"center"}
             >
               <Text fontSize={"xl"} fontWeight={800}>
-                {title}
+                {task?.title}
               </Text>
               {/* <List spacing={3}>
             <ListItem>
@@ -227,9 +230,16 @@ function TaskEntityCard(props: IProps) {
             <Text>{content}</Text>
           </Box>
           <Stack p="4" mt="4" direction={"row"} spacing={4}>
-            <Button flex={1} bg="backgroundPrimary" fontSize={"sm"}>
-              Archivize Task
-            </Button>
+            {onTaskDelete && (
+              <Button
+                onClick={() => onTaskDelete(task?._id)}
+                flex={1}
+                bg="backgroundPrimary"
+                fontSize={"sm"}
+              >
+                Archivize Task
+              </Button>
+            )}
             <Button
               flex={1}
               fontSize={"sm"}
