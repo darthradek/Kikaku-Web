@@ -9,7 +9,7 @@ const handle = app.getRequestHandler();
 
 const apiPaths = {
     "/api": {
-        target: "https://kikaku-app.herokuapp.com",
+        target: "http://localhost:4000",
         pathRewrite: {
             "^/api": "/api",
         },

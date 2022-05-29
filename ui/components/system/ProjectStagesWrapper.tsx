@@ -16,14 +16,16 @@ import {
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { FiPlus, FiTrash } from "react-icons/fi";
+import { IProjectStage } from "../../../utils/interfaces/IProjectStage";
 import TaskEntityCard from "./TaskEntityCard";
 
 interface IProps {
-  projectStageTitle?: string;
+  projectStage?: IProjectStage;
   children?: any;
   createProjectStage?: Function;
-  cancelCreation?: Function;
   setNewProjectStageTitle?: Function;
+  cancelCreation?: Function;
+  deleteProjectStage?: Function;
   setTaskTitle?: Function;
   setTaskContent?: Function;
 }
@@ -31,11 +33,12 @@ interface IProps {
 function ProjectStageWrapper(props: IProps) {
   // SECTION: Props
   const {
-    projectStageTitle,
+    projectStage,
     children,
-    createProjectStage,
-    cancelCreation,
     setNewProjectStageTitle,
+    createProjectStage,
+    deleteProjectStage,
+    cancelCreation,
     setTaskTitle,
     setTaskContent,
   } = props;
@@ -135,7 +138,7 @@ function ProjectStageWrapper(props: IProps) {
                 fontSize="xl"
                 fontWeight={600}
               >
-                {projectStageTitle}
+                {projectStage?.title}
               </Text>
               <HStack alignItems="center">
                 <Button
@@ -203,7 +206,7 @@ function ProjectStageWrapper(props: IProps) {
           )}
         </Box>
       </Flex>
-      {!createProjectStage && (
+      {!createProjectStage && deleteProjectStage && projectStage && (
         <Flex w="100%" justifyContent="flex-end">
           <Button
             fontWeight="bold"
@@ -215,7 +218,7 @@ function ProjectStageWrapper(props: IProps) {
               bg: "red",
               boxShadow: "lg",
             }}
-            // onClick={() => onCreateModalOpen()}
+            onClick={() => deleteProjectStage(projectStage._id)}
           >
             <Icon mr="2" size={"sm"} color="backgroundPrimary" as={FiTrash} />
             Delete Project Stage

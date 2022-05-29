@@ -22,6 +22,15 @@ class ProjectStageService {
     );
     return await response;
   }
+
+  public async deleteProjectStageById(projectStageId: string, token: string) {
+    const response = FetchService.fetchAuthed(
+      this.projectStageUrl + `/delete/` + projectStageId,
+      token,
+      "DELETE"
+    );
+    return await response;
+  }
 }
 
 export default ProjectStageService;

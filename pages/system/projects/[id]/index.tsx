@@ -49,7 +49,6 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
     getProjectById(id);
     getAllProjectStagesForProject(id);
   }, [router]);
-  console.log(id);
 
   // SECTION: Services
   const projectService = new ProjectService();
@@ -78,6 +77,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
     projectStageService
       .createProjectStage(createProjectStageDTO, authToken)
       .then((response: IProjectStage) => {
+        setIsCreateProjectStageOpen(false);
         toast({
           title: "Project Stage created successfully!",
           position: "top-left",
@@ -86,7 +86,6 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
           duration: 1350,
           isClosable: true,
         });
-        setIsCreateProjectStageOpen(false);
         const projectStageResponse: IProjectStage = response;
         const tempProjectStages: IProjectStage[] = projectStages?.filter(
           (projectStage) => {
@@ -102,6 +101,22 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
 
   async function createNewTask() {
     console.log("cipa");
+  }
+
+  async function deleteProjectStageById(projectStageId: string) {
+    projectStageService
+      .deleteProjectStageById(projectStageId, authToken)
+      .then((response) => {
+        console.log("respons", response);
+        toast({
+          title: response?.projectStage.title + " Deleted successfully",
+          position: "top-left",
+          status: "success",
+          duration: 1350,
+          isClosable: true,
+        });
+        // router.push(Routes.systemProjectsPage);
+      });
   }
 
   async function deleteProjectById() {
@@ -151,7 +166,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
         {projectStages ? (
           <Flex
             overflowY="hidden"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             width="auto"
             gap="9"
           >
@@ -170,7 +185,8 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
               return (
                 <ProjectStageWrapper
                   key={index}
-                  projectStageTitle={projectStage.title}
+                  projectStage={projectStage}
+                  deleteProjectStage={deleteProjectStageById}
                 >
                   {projectStage.tasks?.map((task: ITask, index) => {
                     return (
