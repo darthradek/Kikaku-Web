@@ -107,15 +107,22 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
     projectStageService
       .deleteProjectStageById(projectStageId, authToken)
       .then((response) => {
-        console.log("respons", response);
         toast({
-          title: response?.projectStage.title + " Deleted successfully",
+          title: response?.projectStage.title + " deleted successfully",
           position: "top-left",
           status: "success",
-          duration: 1350,
+          duration: 1550,
           isClosable: true,
         });
-        // router.push(Routes.systemProjectsPage);
+        const projectStageResponse: IProjectStage = response.projectStage;
+        const tempProjectStages: IProjectStage[] = projectStages?.filter(
+          (projectStage) => {
+            if (projectStage._id !== projectStageResponse._id) {
+              return project;
+            }
+          }
+        );
+        setProjectStages(tempProjectStages);
       });
   }
 
