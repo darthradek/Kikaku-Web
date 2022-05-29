@@ -3,12 +3,15 @@ import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { FiPlus } from "react-icons/fi";
+import { FiEdit, FiPlus, FiTrash } from "react-icons/fi";
 
 interface IProps {
   headingText?: string;
-  headingIcon: IconType;
+  headingIcon?: IconType;
+  headingPrefix?: string;
   createButtonLabel: string;
+  deleteButtonLabel: string;
+  editButtonLabel: string;
   onCreateModalOpen?: Function;
   onDelete?: Function;
 }
@@ -18,40 +21,18 @@ function SystemPageHeader(props: IProps) {
   const {
     headingText,
     headingIcon,
+    headingPrefix,
     createButtonLabel,
+    deleteButtonLabel,
+    editButtonLabel,
     onCreateModalOpen,
     onDelete,
   } = props;
-
-  // SECTION: Constants & Variables
-
-  // SECTION: Hooks State - Data
-  const [dataState, setDataState] = useState();
-
-  // SECTION: Hooks Effect - Data
-  useEffect(() => {}, []);
-
-  // SECTION: Services
-
-  // SECTION: Services calls
-  async function fetchData() {}
-
-  // SECTION: UI Constants & Variables
-
-  // SECTION: Hooks State - UI
-  const [uiState, setUiState] = useState();
-
-  // SECTION: Hooks Effect - UI
-  useEffect(() => {}, [uiState]);
-
-  // SECTION: UI Events
-  function uiEvent() {}
 
   // SECTION: Render
   return (
     <Box
       mb="6"
-      pb="2"
       borderBottom="3px"
       borderStyle="dashed"
       borderColor="backgroundTertiary"
@@ -59,38 +40,56 @@ function SystemPageHeader(props: IProps) {
     >
       <Flex justifyContent="space-between" align="center">
         <Flex align="center">
-          <Icon
-            mr="4"
-            fontSize="35"
-            color="highlightPrimary"
-            as={headingIcon}
-          />
+          {headingIcon && (
+            <Icon
+              mr="4"
+              fontSize="35"
+              color="highlightPrimary"
+              as={headingIcon}
+            />
+          )}
+          {headingPrefix && (
+            <Text
+              mr={"1rem"}
+              color="backgroundPrimary"
+              fontSize={"4xl"}
+              fontWeight="600"
+              opacity="0.5"
+            >
+              {headingPrefix}
+            </Text>
+          )}
           <Text color="backgroundPrimary" fontSize={"4xl"} fontWeight="600">
             {headingText}
           </Text>
         </Flex>
         <Flex>
           {onDelete && (
-            <IconButton
-              size={"md"}
-              mr={onCreateModalOpen ? "4" : "0"}
-              icon={<DeleteIcon />}
-              aria-label={"Open Menu"}
-              bg="backgroundPrimary"
-              color="backgroundSecondary"
+            <Button
+              fontWeight={"bold"}
+              color={"backgroundPrimary"}
+              bg={"backgroundTertiary"}
+              size="sm"
+              mr="1rem"
               _hover={{
-                bg: "red",
                 color: "backgroundPrimary",
+                transform: "translateY(-2px)",
+                bg: "red",
+                boxShadow: "lg",
               }}
               onClick={() => onDelete()}
-            />
+            >
+              <Icon mr="2" size={"sm"} color="backgroundPrimary" as={FiTrash} />
+              Delete {deleteButtonLabel}
+            </Button>
           )}
           {onCreateModalOpen && (
             <Button
-              fontWeight={600}
+              fontWeight={"bold"}
               color={"backgroundSecondary"}
-              bg={"highlightPrimary"}
-              size="md"
+              bg={"backgroundPrimary"}
+              size="sm"
+              mr="1rem"
               _hover={{
                 color: "backgroundSecondary",
                 transform: "translateY(-2px)",
@@ -99,13 +98,34 @@ function SystemPageHeader(props: IProps) {
               onClick={() => onCreateModalOpen()}
             >
               <Icon
-                fontSize="2xl"
                 mr="2"
-                size={"md"}
+                size={"sm"}
+                color="backgroundSecondary"
+                as={FiEdit}
+              />
+              Edit {editButtonLabel}
+            </Button>
+          )}
+          {onCreateModalOpen && (
+            <Button
+              fontWeight={"bold"}
+              color={"backgroundSecondary"}
+              bg={"highlightPrimary"}
+              size="sm"
+              _hover={{
+                color: "backgroundSecondary",
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              onClick={() => onCreateModalOpen()}
+            >
+              <Icon
+                mr="2"
+                size={"sm"}
                 color="backgroundSecondary"
                 as={FiPlus}
               />
-              Create New {createButtonLabel}
+              {createButtonLabel}
             </Button>
           )}
         </Flex>

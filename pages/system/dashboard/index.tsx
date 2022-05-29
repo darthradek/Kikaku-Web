@@ -12,12 +12,7 @@ function DashboardPage(props: ISystemPageHOCProps) {
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
       <Container maxW={"5xl"}>
-        <Stack
-          mt="10"
-          textAlign={"center"}
-          align={"center"}
-          spacing={{ md: 8 }}
-        >
+        <Stack textAlign={"center"} align={"center"} spacing={{ md: 8 }}>
           <img
             className={css.dashboardIlluWrapper}
             src="/illus/dashboard-illu.svg"
@@ -36,7 +31,7 @@ function DashboardPage(props: ISystemPageHOCProps) {
             meetings and receive smart reminders in appropriate times. Read your
             smart “Daily Agenda” every morning.
           </Text>
-          <Stack spacing={6} direction={"row"}>
+          <Stack mt="2rem" spacing={6} direction={"row"}>
             <Link href={Routes.systemProjectsPage}>
               <Button
                 px={6}

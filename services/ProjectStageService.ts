@@ -1,4 +1,5 @@
 import { ICreateProjectStageDTO } from "../utils/dtos/project-stage/ICreateProjectStageDTO";
+import { IUpdateProjectStageDTO } from "../utils/dtos/project-stage/IUpdateProjectStageDTO";
 import FetchService from "./core/FetchService";
 
 class ProjectStageService {
@@ -9,6 +10,20 @@ class ProjectStageService {
       this.projectStageUrl + `/create`,
       token,
       "POST",
+      data
+    );
+    return await response;
+  }
+
+  public async updateProjectStage(
+    data: IUpdateProjectStageDTO,
+    token: string,
+    projectStageId?: string
+  ) {
+    const response = FetchService.fetchAuthed(
+      this.projectStageUrl + `/update/` + projectStageId,
+      token,
+      "PUT",
       data
     );
     return await response;

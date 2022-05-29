@@ -21,26 +21,24 @@ import TaskEntityCard from "./TaskEntityCard";
 
 interface IProps {
   projectStage?: IProjectStage;
-  children?: any;
+  setCreateTaskOpen?: Function;
   createProjectStage?: Function;
   setNewProjectStageTitle?: Function;
   cancelCreation?: Function;
   deleteProjectStage?: Function;
-  setTaskTitle?: Function;
-  setTaskContent?: Function;
+  children?: any;
 }
 
 function ProjectStageWrapper(props: IProps) {
   // SECTION: Props
   const {
     projectStage,
-    children,
+    setCreateTaskOpen,
     setNewProjectStageTitle,
     createProjectStage,
     deleteProjectStage,
     cancelCreation,
-    setTaskTitle,
-    setTaskContent,
+    children,
   } = props;
 
   // SECTION: Constants & Variables
@@ -59,7 +57,7 @@ function ProjectStageWrapper(props: IProps) {
   // SECTION: UI Constants & Variables
 
   // SECTION: Hooks State - UI
-  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
+  const [dataStateData55, setDataStateData] = useState();
 
   // SECTION: Hooks Effect - UI
   useEffect(() => {}, []);
@@ -71,7 +69,7 @@ function ProjectStageWrapper(props: IProps) {
   return (
     <Flex
       minWidth="450px"
-      minHeight="82vh"
+      minHeight="83vh"
       rounded="md"
       direction="column"
       justifyContent="space-between"
@@ -79,27 +77,25 @@ function ProjectStageWrapper(props: IProps) {
       p="4"
     >
       <Flex flexDirection="column" alignItems="space-between">
-        {createProjectStage ? (
+        {createProjectStage && setNewProjectStageTitle ? (
           <Flex direction="column" justifyContent="space-between">
-            {setNewProjectStageTitle && (
-              <FormControl mb="18px">
-                <FormLabel
-                  color="backgroundPrimary"
-                  htmlFor="password"
-                  fontSize="sm"
-                >
-                  Project Stage Title
-                </FormLabel>
-                <Input
-                  color="backgroundPrimary"
-                  borderColor="backgroundPrimary"
-                  _hover={{ borderColor: "highlightPrimary" }}
-                  onChange={(newValue) =>
-                    setNewProjectStageTitle(newValue.target.value)
-                  }
-                />
-              </FormControl>
-            )}
+            <FormControl mb="18px">
+              <FormLabel
+                color="backgroundPrimary"
+                htmlFor="password"
+                fontSize="sm"
+              >
+                Project Stage Title
+              </FormLabel>
+              <Input
+                color="backgroundPrimary"
+                borderColor="backgroundPrimary"
+                _hover={{ borderColor: "highlightPrimary" }}
+                onChange={(newValue) =>
+                  setNewProjectStageTitle(newValue.target.value)
+                }
+              />
+            </FormControl>
             <Stack direction={"row"} spacing={4}>
               {cancelCreation && (
                 <Button
@@ -141,73 +137,57 @@ function ProjectStageWrapper(props: IProps) {
                 {projectStage?.title}
               </Text>
               <HStack alignItems="center">
-                <Button
-                  fontWeight={600}
-                  color={"backgroundPrimary"}
-                  bg={"highlightSecondary"}
-                  size="sm"
-                  _hover={{
-                    color: "backgroundPrimary",
-                    transform: "translateY(-2px)",
-                    boxShadow: "lg",
-                  }}
-                  onClick={() => {
-                    setIsCreateTaskOpen(true);
-                  }}
-                >
-                  <Icon
-                    fontSize="2xl"
-                    mr="2"
-                    size={"sm"}
-                    color="backgroundPrimary"
-                    as={FiPlus}
-                  />
-                  Add Task
-                </Button>
+                {setCreateTaskOpen && (
+                  <Button
+                    fontWeight={600}
+                    color={"backgroundPrimary"}
+                    bg={"highlightSecondary"}
+                    size="sm"
+                    _hover={{
+                      color: "backgroundPrimary",
+                      transform: "translateY(-2px)",
+                      boxShadow: "lg",
+                    }}
+                    onClick={() => {
+                      setCreateTaskOpen(projectStage?._id);
+                    }}
+                  >
+                    <Icon
+                      fontSize="2xl"
+                      mr="2"
+                      size={"sm"}
+                      color="backgroundPrimary"
+                      as={FiPlus}
+                    />
+                    Add Task
+                  </Button>
+                )}
               </HStack>
             </Flex>
           </Box>
         )}
         <Box>
           {children?.length !== 0 ? (
-            <Box>
-              {isCreateTaskOpen && (
-                <TaskEntityCard
-                  onClose={() => {
-                    setIsCreateTaskOpen(false);
-                  }}
-                  onCreateTask={() => createNewTask()}
-                />
-              )}
-              <Box>{children}</Box>
-            </Box>
+            <Box>{children}</Box>
           ) : (
             <Box>
-              {isCreateTaskOpen ? (
-                <TaskEntityCard
-                  onClose={() => {
-                    setIsCreateTaskOpen(false);
-                  }}
-                />
-              ) : (
-                <Flex mt="12" align="center">
-                  <Image w="8rem" src="/illus/task-illu.svg" />
-                  <Text
-                    ml="4"
-                    color="backgroundPrimary"
-                    fontSize="xl"
-                    fontWeight="bold"
-                  >
-                    No tasks found...
-                  </Text>
-                </Flex>
-              )}
+              <Flex mt="12" align="center">
+                <Image w="8rem" src="/illus/task-illu.svg" />
+                <Text
+                  ml="4"
+                  color="backgroundPrimary"
+                  fontSize="xl"
+                  fontWeight="bold"
+                >
+                  No tasks found...
+                </Text>
+              </Flex>
             </Box>
           )}
         </Box>
       </Flex>
       {!createProjectStage && deleteProjectStage && projectStage && (
-        <Flex w="100%" justifyContent="flex-end">
+        <Flex mt="1rem" w="100%" justifyContent="flex-end">
           <Button
             fontWeight="bold"
             color={"backgroundPrimary"}
@@ -216,7 +196,6 @@ function ProjectStageWrapper(props: IProps) {
             _hover={{
               color: "backgroundPrimary",
               bg: "red",
-              boxShadow: "lg",
             }}
             onClick={() => deleteProjectStage(projectStage._id)}
           >

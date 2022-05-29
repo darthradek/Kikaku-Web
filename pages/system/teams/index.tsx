@@ -83,8 +83,6 @@ function TeamsPage(props: ISystemPageHOCProps) {
   // SECTION: Hooks State - UI
   const [teamName, setTeamName] = useState<string>("");
   const [teamDescription, setTeamDescription] = useState<string>("");
-  console.log("team-name", teamName);
-  console.log("team-description", teamDescription);
 
   // SECTION: Hooks Effect - UI
   useEffect(() => {}, []);

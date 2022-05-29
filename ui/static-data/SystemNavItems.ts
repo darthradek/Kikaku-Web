@@ -10,14 +10,14 @@ class SystemNavItems {
       icon: FiTrendingUp,
     },
     {
-      label: "Teams",
-      href: Routes.systemTeamsPage,
-      icon: FiUsers,
-    },
-    {
       label: "Projects",
       href: Routes.systemProjectsPage,
       icon: FiTrello,
+    },
+    {
+      label: "Teams",
+      href: Routes.systemTeamsPage,
+      icon: FiUsers,
     },
   ];
 }

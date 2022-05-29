@@ -13,6 +13,7 @@ import {
   FormLabel,
   Input,
   FormHelperText,
+  Textarea,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -64,7 +65,6 @@ function TaskEntityCard(props: IProps) {
 
   // SECTION: UI Events
   function uiEvent() {}
-
   // SECTION: Render
   return (
     <Box mt="4" w={"full"}>
@@ -74,7 +74,6 @@ function TaskEntityCard(props: IProps) {
           bg={"white"}
           boxShadow={"2xl"}
           rounded={"md"}
-          minHeight="24vh"
           justifyContent="space-between"
           flexDirection="column"
         >
@@ -89,90 +88,43 @@ function TaskEntityCard(props: IProps) {
               <Text fontSize={"xl"} fontWeight={800}>
                 New Task
               </Text>
-              {setTaskTitle && (
-                <FormControl pb="12px" isRequired>
-                  <FormLabel fontSize="sm">Task title</FormLabel>
-                  <Input
-                    placeholder="Enter task title"
-                    borderColor="backgroundSecondary"
-                    size="sm"
-                    _hover={{ borderColor: "highlightSecondary" }}
-                    onChange={(newValue) => setTaskTitle(newValue.target.value)}
-                  />
-                  <FormHelperText>
-                    This is general title of your task
-                  </FormHelperText>
-                </FormControl>
-              )}
-              {setTaskTitle && (
-                <FormControl pb="12px" isRequired>
-                  <FormLabel fontSize="sm">Task title</FormLabel>
-                  <Input
-                    placeholder="Enter task title"
-                    borderColor="backgroundSecondary"
-                    size="sm"
-                    _hover={{ borderColor: "highlightSecondary" }}
-                    onChange={(newValue) => setTaskTitle(newValue.target.value)}
-                  />
-                  <FormHelperText>
-                    This is general title of your task
-                  </FormHelperText>
-                </FormControl>
-              )}
+              <FormControl pb="12px" isRequired>
+                <FormLabel fontSize="sm">Task title</FormLabel>
+                <Input
+                  placeholder="Enter task title"
+                  borderColor="backgroundSecondary"
+                  size="sm"
+                  _hover={{ borderColor: "highlightSecondary" }}
+                  onChange={(newValue) => setTaskTitle?.(newValue.target.value)}
+                />
+                <FormHelperText>
+                  This is general title of your task
+                </FormHelperText>
+              </FormControl>
+              <FormControl pb="12px" isRequired>
+                <FormLabel fontSize="sm">Task Content</FormLabel>
+                <Textarea
+                  h="7rem"
+                  placeholder="Enter task content..."
+                  borderColor="backgroundSecondary"
+                  size="sm"
+                  _hover={{ borderColor: "highlightSecondary" }}
+                  onChange={(newValue) =>
+                    setTaskContent?.(newValue.target.value)
+                  }
+                />
+                <FormHelperText>
+                  This is general title of your task
+                </FormHelperText>
+              </FormControl>
             </Stack>
-            {assigned_users && (
-              <HStack
-                textAlign={"center"}
-                justifyContent={"left"}
-                spacing={1}
-                align={"center"}
-                mt="2"
-                pl="1"
-                mb="4"
-              >
-                <Text
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  bg="backgroundSecondary"
-                  p={1}
-                  px={3}
-                  color={"backgroundPrimary"}
-                  rounded={"xl"}
-                >
-                  Andrzej
-                </Text>
-                <Text
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  bg="backgroundSecondary"
-                  p={1}
-                  px={3}
-                  color={"backgroundPrimary"}
-                  rounded={"xl"}
-                >
-                  Piotr
-                </Text>
-                <Text
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  bg="backgroundSecondary"
-                  p={1}
-                  px={3}
-                  color={"backgroundPrimary"}
-                  rounded={"xl"}
-                >
-                  Misio
-                </Text>
-              </HStack>
-            )}
-            <Text>{content}</Text>
           </Box>
           <Stack pl="4" pr="4" pb="4" direction={"row"} spacing={4}>
             {onClose && (
               <Button
                 flex={1}
                 onClick={() => {
-                  onClose();
+                  onClose?.();
                 }}
                 bg="backgroundPrimary"
                 fontSize={"sm"}
@@ -183,14 +135,13 @@ function TaskEntityCard(props: IProps) {
             <Button
               flex={1}
               fontSize={"sm"}
-              bg="none"
-              border="2px"
-              borderStyle="dashed"
               borderColor="backgroundQuaternary"
               color={"backgroundSecondary"}
+              onClick={() => onCreateTask()}
+              bg="highlightPrimary"
               _hover={{
-                bg: "highlightPrimary",
-                color: "backgroundSecondary",
+                bg: "highlightSecondary",
+                color: "backgroundPrimary",
               }}
             >
               Create Task
@@ -203,7 +154,6 @@ function TaskEntityCard(props: IProps) {
           bg={"white"}
           boxShadow={"2xl"}
           rounded={"md"}
-          minHeight="24vh"
           justifyContent="space-between"
           flexDirection="column"
         >

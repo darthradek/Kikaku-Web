@@ -7,7 +7,6 @@ import {
   useToast,
   Text,
   useDisclosure,
-  Icon,
 } from "@chakra-ui/react";
 import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -16,6 +15,7 @@ import { FiPlus, FiTrello } from "react-icons/fi";
 import Routes from "../../../../global/Routes";
 import ProjectService from "../../../../services/ProjectService";
 import ProjectStageService from "../../../../services/ProjectStageService";
+import TaskService from "../../../../services/TaskService";
 import ProjectStagesWrapper from "../../../../ui/components/system/ProjectStagesWrapper";
 import ProjectStageWrapper from "../../../../ui/components/system/ProjectStagesWrapper";
 import SystemPageHeader from "../../../../ui/components/system/SystemPageHeader";
@@ -25,6 +25,8 @@ import SystemPageHOC, {
   systemPageServerSideProps,
 } from "../../../../ui/hocs/system-page-hoc/SystemPageHOC";
 import { ICreateProjectStageDTO } from "../../../../utils/dtos/project-stage/ICreateProjectStageDTO";
+import { IUpdateProjectStageDTO } from "../../../../utils/dtos/project-stage/IUpdateProjectStageDTO";
+import { ICreateTaskDTO } from "../../../../utils/dtos/task/ICreateTaskDTO";
 import { IProject } from "../../../../utils/interfaces/IProject";
 import { IProjectStage } from "../../../../utils/interfaces/IProjectStage";
 import { ITask } from "../../../../utils/interfaces/ITask";
@@ -53,6 +55,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
   // SECTION: Services
   const projectService = new ProjectService();
   const projectStageService = new ProjectStageService();
+  const taskService = new TaskService();
 
   // SECTION: Services calls
   async function getProjectById(id: string) {
@@ -74,6 +77,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       title: newProjectStageTitle,
       project_id: id,
     };
+
     projectStageService
       .createProjectStage(createProjectStageDTO, authToken)
       .then((response: IProjectStage) => {
@@ -99,8 +103,62 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       });
   }
 
+  async function updateProjectStage(
+    updateProjectStageDTO: IUpdateProjectStageDTO,
+    projectStageId?: string
+  ) {
+    projectStageService
+      .updateProjectStage(updateProjectStageDTO, authToken, projectStageId)
+      .then((response: IProjectStage) => {
+        getAllProjectStagesForProject(id);
+        toast({
+          title: "Project Stage: " + response.title + " successfully updated!!",
+          position: "top-left",
+          description: "Feel free to assign some users to it",
+          status: "success",
+          duration: 1550,
+          isClosable: true,
+        });
+      });
+  }
+
   async function createNewTask() {
-    console.log("cipa");
+    const createTaskDTO: ICreateTaskDTO = {
+      title: newTaskTitle,
+      content: newTaskContent,
+      status: 1,
+      isOptional: false,
+      assigned_users: [],
+      deadline: "2022-05-24T07:26:43.634+00:00",
+      created_by: loggedInUser._id,
+    };
+    taskService.createTask(createTaskDTO, authToken).then((response: any) => {
+      const projectStageToBeUpdated: IProjectStage[] = projectStages.filter(
+        (projectStage) => {
+          if (projectStage._id === isCreateTaskOpen) {
+            return projectStage;
+          }
+        }
+      );
+
+      const updatedProjectStageTasksTemp: string[] = [];
+
+      projectStageToBeUpdated[0].tasks.forEach((task) => {
+        updatedProjectStageTasksTemp.push(task._id);
+      });
+
+      updatedProjectStageTasksTemp.push(response._id);
+      const updateProjectStageDTO: IUpdateProjectStageDTO = {
+        title: projectStageToBeUpdated[0].title,
+        tasks: updatedProjectStageTasksTemp,
+        project_id: project?._id,
+      };
+
+      updateProjectStage(updateProjectStageDTO, isCreateTaskOpen);
+      setIsCreateTaskOpen("");
+      setNewTaskTitle("");
+      setNewTaskDeadline("");
+    });
   }
 
   async function deleteProjectStageById(projectStageId: string) {
@@ -130,7 +188,41 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
     projectService
       .deleteProjectById(id, authToken)
       .then((response: IProject) => {
-        console.log("respo", response);
+        toast({
+          title: response?.name + " Deleted successfully",
+          position: "top-left",
+          status: "success",
+          duration: 1350,
+          isClosable: true,
+        });
+        router.push(Routes.systemProjectsPage);
+      });
+  }
+  // SECTION: UI Constants & Variables
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // SECTION: Hooks State - UI
+  const [isCreateProjectStageOpen, setIsCreateProjectStageOpen] =
+    useState<boolean>(false);
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<string>("");
+  //LINK: newProjectStage
+  const [newProjectStageTitle, setNewProjectStageTitle] = useState<string>("");
+  //LINK: newTask
+  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [newTaskContent, setNewTaskContent] = useState<string>("");
+  const [newTaskDeadline, setNewTaskDeadline] = useState<string>("");
+
+  useEffect(() => {
+    if (isCreateTaskOpen === "") {
+      setNewTaskTitle("");
+      setNewTaskContent("");
+    }
+  }, [isCreateTaskOpen]);
+
+  async function openCreateTaskForm() {
+    projectService
+      .deleteProjectById(id, authToken)
+      .then((response: IProject) => {
         toast({
           title: response?.name + " Deleted successfully",
           position: "top-left",
@@ -142,50 +234,38 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       });
   }
 
-  // SECTION: UI Constants & Variables
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // SECTION: Hooks State - UI
-  const [isCreateProjectStageOpen, setIsCreateProjectStageOpen] =
-    useState<boolean>(false);
-  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
-  //LINK: newProjectStage
-  const [newProjectStageTitle, setNewProjectStageTitle] = useState<string>("");
-  //LINK: newTask
-  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
-  const [newTaskContent, setNewTaskContent] = useState<string>("");
-  const [newTaskDeadline, setNewTaskDeadline] = useState<string>("");
-
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
-      <Box position="fixed" w="97.5%">
+      <Box>
         <SystemPageHeader
+          headingPrefix={"Project Workspace:"}
           headingText={project?.name}
-          headingIcon={FiTrello}
-          createButtonLabel="Project Stage"
+          createButtonLabel="Add Project Stage"
+          deleteButtonLabel="Project"
+          editButtonLabel="Project"
           onCreateModalOpen={() => setIsCreateProjectStageOpen(true)}
           onDelete={() => {
             deleteProjectById();
           }}
         />
       </Box>
-      <Box mt="5rem">
+      <Box>
         {projectStages ? (
           <Flex
-            overflowY="hidden"
+            overflowX="auto"
             justifyContent="flex-start"
             width="auto"
             gap="9"
           >
             {isCreateProjectStageOpen && (
               <ProjectStagesWrapper
+                setNewProjectStageTitle={(data: string) =>
+                  setNewProjectStageTitle(data)
+                }
                 createProjectStage={createNewProjectStage}
                 cancelCreation={() => {
                   setIsCreateProjectStageOpen(false);
                 }}
-                setNewProjectStageTitle={(data: string) =>
-                  setNewProjectStageTitle(data)
-                }
               />
             )}
             {projectStages?.map((projectStage: IProjectStage, index) => {
@@ -194,7 +274,18 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
                   key={index}
                   projectStage={projectStage}
                   deleteProjectStage={deleteProjectStageById}
+                  setCreateTaskOpen={(data: string) =>
+                    setIsCreateTaskOpen(data)
+                  }
                 >
+                  {isCreateTaskOpen === projectStage._id && (
+                    <TaskEntityCard
+                      onCreateTask={() => createNewTask()}
+                      setTaskTitle={(data: string) => setNewTaskTitle(data)}
+                      setTaskContent={(data: string) => setNewTaskContent(data)}
+                      onClose={() => setIsCreateTaskOpen("")}
+                    />
+                  )}
                   {projectStage.tasks?.map((task: ITask, index) => {
                     return (
                       <TaskEntityCard

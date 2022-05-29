@@ -37,8 +37,8 @@ function SystemSidebar(props: IProps) {
 
   // SECTION: Render
   return (
-    <Box>
-      <Box px="4" as="header" position="fixed" w="100%" bg="white">
+    <Box as="nav">
+      <Box px="4" as="header" position="absolute" w="100%" bg="white">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
