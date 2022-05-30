@@ -10,6 +10,7 @@ class Routes {
   public static readonly systemDashboardPage: string = "/system/dashboard";
   public static readonly systemTeamsPage: string = "/system/teams";
   public static readonly systemProjectsPage: string = "/system/projects";
+  public static readonly systemAccountPage: string = "/system/account";
 }
 
 export default Routes;

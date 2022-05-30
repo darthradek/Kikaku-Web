@@ -1,5 +1,4 @@
-import { DeleteIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
@@ -9,9 +8,9 @@ interface IProps {
   headingText?: string;
   headingIcon?: IconType;
   headingPrefix?: string;
-  createButtonLabel: string;
-  deleteButtonLabel: string;
-  editButtonLabel: string;
+  createButtonLabel?: string;
+  deleteButtonLabel?: string;
+  editButtonLabel?: string;
   onCreateModalOpen?: Function;
   onDelete?: Function;
 }
@@ -83,7 +82,7 @@ function SystemPageHeader(props: IProps) {
               Delete {deleteButtonLabel}
             </Button>
           )}
-          {onCreateModalOpen && (
+          {/* {editButtonLabel && (
             <Button
               fontWeight={"bold"}
               color={"backgroundSecondary"}
@@ -105,7 +104,7 @@ function SystemPageHeader(props: IProps) {
               />
               Edit {editButtonLabel}
             </Button>
-          )}
+          )} */}
           {onCreateModalOpen && (
             <Button
               fontWeight={"bold"}

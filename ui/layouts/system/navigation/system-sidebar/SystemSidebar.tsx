@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import SystemNavItems from "../../../../static-data/SystemNavItems";
+import Routes from "../../../../../global/Routes";
 interface IProps {
   loggedInUserName: string;
 }
@@ -32,8 +33,6 @@ function SystemSidebar(props: IProps) {
 
   // SECTION: Hooks State - UI
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // SECTION: UI Events
 
   // SECTION: Render
   return (
@@ -106,12 +105,14 @@ function SystemSidebar(props: IProps) {
           </HStack>
           <Flex alignItems="center">
             {loggedInUserName && (
-              <Avatar
-                bg="backgroundSecondary"
-                color="highlightPrimary"
-                name={loggedInUserName[0]}
-                size={"md"}
-              />
+              <Link href={Routes.systemAccountPage}>
+                <Avatar
+                  bg="backgroundSecondary"
+                  color="highlightPrimary"
+                  name={loggedInUserName[0]}
+                  size={"md"}
+                />
+              </Link>
             )}
           </Flex>
         </Flex>

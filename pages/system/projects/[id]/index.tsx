@@ -129,7 +129,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       status: 1,
       isOptional: false,
       assigned_users: [],
-      deadline: "2022-05-24T07:26:43.634+00:00",
+      deadline: newTaskDeadline.toString(),
       created_by: loggedInUser._id,
     };
     taskService.createTask(createTaskDTO, authToken).then((response: any) => {
@@ -157,7 +157,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
       updateProjectStage(updateProjectStageDTO, isCreateTaskOpen);
       setIsCreateTaskOpen("");
       setNewTaskTitle("");
-      setNewTaskDeadline("");
+      setNewTaskDeadline(new Date());
     });
   }
 
@@ -227,7 +227,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
   //LINK: newTask
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [newTaskContent, setNewTaskContent] = useState<string>("");
-  const [newTaskDeadline, setNewTaskDeadline] = useState<string>("");
+  const [newTaskDeadline, setNewTaskDeadline] = useState<Date>(new Date());
 
   useEffect(() => {
     if (isCreateTaskOpen === "") {
@@ -285,6 +285,8 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
                       onCreateTask={() => createNewTask()}
                       setTaskTitle={(data: string) => setNewTaskTitle(data)}
                       setTaskContent={(data: string) => setNewTaskContent(data)}
+                      setTaskDeadline={(data: any) => setNewTaskDeadline(data)}
+                      newTaskDeadline={newTaskDeadline}
                       onClose={() => setIsCreateTaskOpen("")}
                     />
                   )}

@@ -18,8 +18,10 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import type { GetServerSideProps } from "next";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FiTrello } from "react-icons/fi";
 import Routes from "../../../global/Routes";
@@ -30,9 +32,9 @@ import SystemPageHOC, {
   ISystemPageHOCProps,
   systemPageServerSideProps,
 } from "../../../ui/hocs/system-page-hoc/SystemPageHOC";
+import css from "./index.module.scss";
 import { ICreateProjectDTO } from "../../../utils/dtos/project/ICreateProjectDTO";
 import { IProject } from "../../../utils/interfaces/IProject";
-import { IUser } from "../../../utils/interfaces/IUser";
 
 function ProjectsPage(props: ISystemPageHOCProps) {
   // SECTION: Props
@@ -61,7 +63,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
       name: projectName,
       objective: projectObjective,
       description: projectDescription,
-      deadline: "2022-05-22T23:51:52.337Z",
+      deadline: projectDeadline.toString(),
       created_by: loggedInUser._id,
     };
 
@@ -77,14 +79,10 @@ function ProjectsPage(props: ISystemPageHOCProps) {
           duration: 1350,
           isClosable: true,
         });
-        const projectResponse: IProject = response;
-        const tempProjects: IProject[] = projects.filter((project) => {
-          if (project._id !== projectResponse._id) {
-            return project;
-          }
-        });
-        tempProjects.push(projectResponse);
-        setProjects(tempProjects);
+        setProjectDeadline(new Date());
+        setProjectDescription("");
+        setProjectName("");
+        getAllProjectsCreatedByUser();
         onClose();
       });
   }
@@ -104,6 +102,7 @@ function ProjectsPage(props: ISystemPageHOCProps) {
   const [projectName, setProjectName] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
   const [projectObjective, setProjectObjective] = useState<string>("");
+  const [projectDeadline, setProjectDeadline] = useState<Date>(new Date());
 
   // SECTION: UI Events
   function onProjectClick(project: IProject) {
@@ -112,13 +111,12 @@ function ProjectsPage(props: ISystemPageHOCProps) {
       query: { id: project._id },
     });
   }
-
   return (
     <SystemPageHOC systemPageProps={props.systemPageProps}>
       <SystemPageHeader
         headingText="Projects"
         headingIcon={FiTrello}
-        createButtonLabel="Project"
+        createButtonLabel="Create New Project"
         onCreateModalOpen={onOpen}
       />
       <Box>
@@ -206,6 +204,18 @@ function ProjectsPage(props: ISystemPageHOCProps) {
                   setProjectObjective(newValue.target.value)
                 }
               />
+            </FormControl>
+            <FormControl pb="12px">
+              <FormLabel htmlFor="email" fontSize="md">
+                Project Deadline
+              </FormLabel>
+              <Button border="1px solid" borderColor="grey" w="100%" bg="white">
+                <DatePicker
+                  selected={projectDeadline}
+                  className={css.myDatePicker}
+                  onChange={(date: Date) => setProjectDeadline(date)}
+                />
+              </Button>
             </FormControl>
           </ModalBody>
           <ModalFooter>

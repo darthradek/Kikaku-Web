@@ -8,13 +8,17 @@ import {
   ListItem,
   Stack,
   Flex,
+  Icon,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
+  FiArrowRight,
   FiArrowUpCircle,
   FiCalendar,
   FiPieChart,
+  FiPlus,
   FiStar,
   FiTarget,
   FiUsers,
@@ -62,8 +66,7 @@ function ProjectEntityCard(props: IProps) {
         <Box>
           <Flex
             rounded={"md"}
-            maxW={"280px"}
-            w={"full"}
+            w={"25rem"}
             flexDirection="column"
             justifyContent="space-between"
             height={"25vh"}
@@ -124,24 +127,30 @@ function ProjectEntityCard(props: IProps) {
               )}
             </Box>
             <Box rounded={"md"} bg={"backgroundPrimary"} px={6} pt="4" pb="5">
-              <List spacing={3}>
-                <ListItem>
-                  <Flex align={"center"}>
-                    <ListIcon as={FiTarget} color="highlightPrimary" />
-                    {project?.objective}
-                  </Flex>
-                  <Flex align={"center"}>
-                    <ListIcon as={FiArrowUpCircle} color="highlightPrimary" />
-                    Kickstared
-                  </Flex>
-                  <Flex align={"center"}>
-                    <ListIcon as={FiUsers} color="highlightPrimary" />1
-                  </Flex>
-                  <Flex align={"center"}>
-                    <ListIcon as={FiCalendar} color="highlightPrimary" />
-                    {project?.deadline}
-                  </Flex>
-                </ListItem>
+              <List spacing="2">
+                <Flex align={"center"}>
+                  <ListIcon as={FiUsers} color="highlightPrimary" />1
+                </Flex>
+                <Flex align={"center"}>
+                  <ListIcon as={FiTarget} color="highlightPrimary" />
+                  {project?.objective}
+                </Flex>
+                <Flex align={"center"}>
+                  <ListIcon as={FiPlus} color="highlightPrimary" />
+                  {project.created_by.email}
+                </Flex>
+                <Flex fontSize={"0.9rem"} alignItems="center">
+                  <ListIcon as={FiCalendar} color="highlightPrimary" />
+                  {dayjs(project?.created_at).format("M/D/YYYY h:mm A")}
+                  <Icon
+                    mr="1"
+                    ml="1"
+                    size={"sm"}
+                    color="highlightSecondary"
+                    as={FiArrowRight}
+                  />
+                  {dayjs(project?.deadline).format("M/D/YYYY h:mm A")}
+                </Flex>
               </List>
               <Button
                 mt={6}

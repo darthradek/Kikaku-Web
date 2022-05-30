@@ -14,12 +14,25 @@ import {
   Input,
   FormHelperText,
   Textarea,
+  Icon,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { FiPlus, FiTrash, FiUsers } from "react-icons/fi";
+import {
+  FiArrowDownRight,
+  FiArrowRight,
+  FiArrowUp,
+  FiArrowUpCircle,
+  FiClock,
+  FiPlus,
+  FiTrash,
+  FiUsers,
+} from "react-icons/fi";
 import { ITask } from "../../../utils/interfaces/ITask";
 import { IUser } from "../../../utils/interfaces/IUser";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface IProps {
   task?: ITask;
@@ -30,6 +43,8 @@ interface IProps {
   onTaskDelete?: Function;
   setTaskTitle?: Function;
   setTaskContent?: Function;
+  setTaskDeadline?: Function;
+  newTaskDeadline?: Date;
 }
 
 function TaskEntityCard(props: IProps) {
@@ -43,6 +58,8 @@ function TaskEntityCard(props: IProps) {
     onTaskDelete,
     setTaskTitle,
     setTaskContent,
+    setTaskDeadline,
+    newTaskDeadline,
   } = props;
 
   // SECTION: Constants & Variables
@@ -120,6 +137,22 @@ function TaskEntityCard(props: IProps) {
                   This is general title of your task
                 </FormHelperText>
               </FormControl>
+              <FormControl pb="12px" isRequired>
+                <FormLabel fontSize="sm">Task Content</FormLabel>
+                <Button
+                  border="1px solid"
+                  borderColor="grey"
+                  w="100%"
+                  bg="white"
+                >
+                  {setTaskDeadline && (
+                    <DatePicker
+                      selected={newTaskDeadline}
+                      onChange={(date: Date) => setTaskDeadline(date)}
+                    />
+                  )}
+                </Button>
+              </FormControl>
             </Stack>
           </Box>
           <Stack pl="4" pr="4" pb="4" direction={"row"} spacing={4}>
@@ -162,7 +195,7 @@ function TaskEntityCard(props: IProps) {
         >
           <Box mt="2" pr="4" pl="4">
             <Stack
-              mb="2"
+              mb="4"
               direction={"column"}
               align="left"
               w={"full"}
@@ -171,16 +204,27 @@ function TaskEntityCard(props: IProps) {
               <Text fontSize={"xl"} fontWeight={800}>
                 {task?.title}
               </Text>
-              {/* <List spacing={3}>
-            <ListItem>
-              <ListIcon as={FiPlus} color="highlightPrimary" />
-              {created_by}
-            </ListItem>
-            <ListItem>
-              <ListIcon as={FiUsers} color="highlightPrimary" />
-              49 users
-            </ListItem>
-          </List> */}
+              <List spacing="1">
+                <ListItem fontWeight="bold" fontSize="0.9rem">
+                  <ListIcon as={FiArrowUpCircle} color="highlightPrimary" />
+                  {task?.status === 1 ? "Kickstarted" : "Finished"}
+                </ListItem>
+                <ListItem fontWeight="bold" fontSize="0.9rem">
+                  <Flex alignItems="center">
+                    <ListIcon as={FiClock} color="highlightPrimary" />
+                    {dayjs(task?.created_at).format("M/D/YYYY h:mm A")}
+                    <Icon
+                      mr="1"
+                      ml="1"
+                      size={"sm"}
+                      color="highlightSecondary"
+                      as={FiArrowRight}
+                    />
+
+                    {dayjs(task?.deadline).format("M/D/YYYY h:mm A")}
+                  </Flex>
+                </ListItem>
+              </List>
             </Stack>
             {assigned_users && (
               <HStack

@@ -68,7 +68,7 @@ function ProjectStageWrapper(props: IProps) {
   // SECTION: Render
   return (
     <Flex
-      minWidth="450px"
+      w="450px"
       minHeight="83vh"
       rounded="md"
       direction="column"
