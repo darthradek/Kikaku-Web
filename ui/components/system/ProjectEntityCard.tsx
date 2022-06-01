@@ -127,7 +127,7 @@ function ProjectEntityCard(props: IProps) {
               )}
             </Box>
             <Box rounded={"md"} bg={"backgroundPrimary"} px={6} pt="4" pb="5">
-              <List spacing="2">
+              <List fontWeight="bold" spacing="2">
                 <Flex align={"center"}>
                   <ListIcon as={FiUsers} color="highlightPrimary" />1
                 </Flex>
@@ -139,9 +139,9 @@ function ProjectEntityCard(props: IProps) {
                   <ListIcon as={FiPlus} color="highlightPrimary" />
                   {project.created_by.email}
                 </Flex>
-                <Flex fontSize={"0.9rem"} alignItems="center">
+                <Flex alignItems="center">
                   <ListIcon as={FiCalendar} color="highlightPrimary" />
-                  {dayjs(project?.created_at).format("M/D/YYYY h:mm A")}
+                  {dayjs(project?.created_at).format("M/D/YYYY")}
                   <Icon
                     mr="1"
                     ml="1"
@@ -149,7 +149,7 @@ function ProjectEntityCard(props: IProps) {
                     color="highlightSecondary"
                     as={FiArrowRight}
                   />
-                  {dayjs(project?.deadline).format("M/D/YYYY h:mm A")}
+                  {dayjs(project?.deadline).format("M/D/YYYY")}
                 </Flex>
               </List>
               <Button

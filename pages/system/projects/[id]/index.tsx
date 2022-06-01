@@ -100,6 +100,7 @@ function SelectedProjectPage(props: ISystemPageHOCProps) {
         );
         tempProjectStages.push(projectStageResponse);
         setProjectStages(tempProjectStages);
+        getAllProjectStagesForProject(id);
       });
   }
 
